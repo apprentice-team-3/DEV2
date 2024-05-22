@@ -23,7 +23,7 @@ export default function Single({ title, placeholder }) {
               setContent("");
             }
           }}
-          value={content}
+          defaultValue={content}
         ></textarea>
       </div>
       <button className="single__button" onClick={() => setShowFeedBack(true)}>
