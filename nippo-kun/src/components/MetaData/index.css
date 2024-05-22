@@ -7,6 +7,7 @@
 
 .MetaData>div {
   display: flex;
+  align-items: baseline;
 }
 
 select {

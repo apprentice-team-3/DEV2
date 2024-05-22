@@ -3,6 +3,10 @@ import './index.css';
 
 function MetaData() {
     const [currentDate, setCurrentDate] = useState('');
+    const [selectedHour, setSelectedHour] = useState(() => {
+        const savedHour = localStorage.getItem('defaultStudyHour');
+        return savedHour !== null ? Number(savedHour) : 10;
+    });
 
     useEffect(() => {
         const today = new Date();
@@ -13,6 +17,12 @@ function MetaData() {
         setCurrentDate(formattedDate);
     }, []);
 
+    const handleHourChange = (e) => {
+        const newHour = e.target.value;
+        setSelectedHour(newHour);
+        localStorage.setItem('defaultStudyHour', newHour);
+    };
+
     return (
         <>
             <div className='MetaData'>
@@ -22,14 +32,14 @@ function MetaData() {
                 </div>
                 <div className='time'>
                     <div>学習時間</div>
-                    <select>
+                    <select value={selectedHour} onChange={handleHourChange}>
                         {[...Array(25).keys()].map((hour) => (
                             <option key={hour} value={hour}>{hour}</option>
                         ))}
                     </select>
                 </div>
                 <div className='mind'>
-                    <div>今日の気持ち</div>
+                    <div>今日の気持ち（1:Bad 5:Good）</div>
                     <select>
                         {[1, 2, 3, 4, 5].map((value) => (
                             <option key={value} value={value}>{value}</option>
