@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
-import TodoList from './TodoList';
-
 
 
 function Header() {
@@ -10,6 +8,15 @@ function Header() {
       ? JSON.parse(localStorage.getItem("yesterday"))
       : []
   );
+
+  useEffect(() => {
+    //初めてアプリを使用する場合にテストデータを設定
+    if (!localStorage.getItem("yesterday")) {
+      const testTasks = ["タスク1", "タスク2", "タスク3"];
+      localStorage.setItem("yesterday", JSON.stringify(testTasks));
+      setYesterdayTasks(testTasks);
+    }
+  }, []);
 
   return(
     <header className="header">
