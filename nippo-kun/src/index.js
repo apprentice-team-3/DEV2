@@ -1,13 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import PDCA from "./components/pdca";
+import PDCA from "./components/PDCA/index";
+import MetaData from './components/MetaData/index';
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <PDCA />
+    <MetaData />
+    {/* <PDCA /> */}
   </React.StrictMode>
 );
 
