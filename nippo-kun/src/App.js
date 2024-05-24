@@ -1,9 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
+import Header from './components/header/index.js';
 
 function App() {
   return (
     <div className="App">
+      <Header /> {/* Headerコンポーネントの使用 */}
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
