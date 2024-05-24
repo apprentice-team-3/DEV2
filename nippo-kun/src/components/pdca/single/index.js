@@ -1,10 +1,22 @@
+import { marked } from "marked";
 import React, { useState } from "react";
+import sanitizeHtml from "sanitize-html";
 import "./index.css";
 
 export default function Single({ title, placeholder }) {
-  const [showFeedback, setShowFeedBack] = useState(false);
-  const [content, setContent] = useState("");
-  const [markdownList, setMarkdownList] = useState([]);
+  const [markdown, setMarkdown] = useState("");
+  const [showFeedback, setShowFeedBack] = useState("");
+  const markedText = sanitizeHtml(markdown, {
+    allowedTags: [],
+    disallowedTagsMode: "recursiveEscape",
+  });
+
+  marked.setOptions({
+    gfm: true,
+    breaks: true,
+  });
+
+  const htmlText = marked.parse(markedText);
 
   return (
     <div>
@@ -15,16 +27,15 @@ export default function Single({ title, placeholder }) {
           className="single__textarea"
           placeholder={placeholder}
           onChange={(e) => {
-            setContent(e.target.value);
+            setMarkdown(e.target.value);
           }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              setMarkdownList([...markdownList, e.target.value]);
-              setContent("");
-            }
-          }}
-          defaultValue={content}
         ></textarea>
+      </div>
+      <div className="single__preview">
+        <p>プレビュー</p>
+        <div className="">
+          <div dangerouslySetInnerHTML={{ __html: htmlText }} />
+        </div>
       </div>
       <button className="single__button" onClick={() => setShowFeedBack(true)}>
         フィードバックを取得する
