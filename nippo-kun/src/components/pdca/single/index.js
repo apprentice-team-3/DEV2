@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import sanitizeHtml from "sanitize-html";
 import "./index.css";
 
-export default function Single({ title, placeholder }) {
+export default function Single({ title, placeholder, order = "PDCA" }) {
   const [markdown, setMarkdown] = useState("");
   const [showFeedback, setShowFeedBack] = useState("");
+  const [feedbackText, setFeedbackText] = useState("");
   const markedText = sanitizeHtml(markdown, {
     allowedTags: [],
     disallowedTagsMode: "recursiveEscape",
@@ -17,6 +18,33 @@ export default function Single({ title, placeholder }) {
   });
 
   const htmlText = marked.parse(markedText);
+
+  const onClick = async () => {
+    setShowFeedBack(true);
+    setFeedbackText("AIが生成中です...");
+
+    console.log(process.env.REACT_APP_SERVER_URL);
+
+    const response = await fetch(process.env.REACT_APP_SERVER_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        value: markdown,
+        order,
+      }),
+    });
+
+    if (response.ok) {
+      response.json().then((data) => {
+        const { generatedText } = data;
+        setFeedbackText(marked.parse(generatedText));
+      });
+    } else {
+      setFeedbackText("エラーが発生しました");
+    }
+  };
 
   return (
     <div>
@@ -37,10 +65,15 @@ export default function Single({ title, placeholder }) {
           <div dangerouslySetInnerHTML={{ __html: htmlText }} />
         </div>
       </div>
-      <button className="single__button" onClick={() => setShowFeedBack(true)}>
+      <button className="single__button" onClick={onClick}>
         フィードバックを取得する
       </button>
-      {showFeedback && <div className="single__feedback">feed-back</div>}
+      {showFeedback && (
+        <div
+          className="single__feedback"
+          dangerouslySetInnerHTML={{ __html: feedbackText }}
+        ></div>
+      )}
     </div>
   );
 }
