@@ -1,19 +1,32 @@
 .MetaData {
   display: flex;
   gap: 20px;
+  padding: 10px;
   align-items: center;
   font-size: 20px;
 }
 
 .MetaData>div {
   display: flex;
-  align-items: baseline;
+  align-items: center;
 }
 
 select {
   margin: 3px;
+  width: 40px;
+  height: 30px;
 }
 
 .currentDate {
   margin-left: 3px;
+}
+
+.timeUnit {
+  font-size: 15px;
+}
+
+.selectedMind {
+  margin: 3px;
+  width: 90px;
+  height: 30px;
 }

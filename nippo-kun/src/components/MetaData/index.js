@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 
 function MetaData() {
@@ -26,13 +26,26 @@ function MetaData() {
 
     const [selectedMind, setSelectedMind] = useState(() => {
         const savedMind = localStorage.getItem('defaultTodayMind');
-        return savedMind !== null ? Number(savedMind) : 5;
+        return savedMind !== null ? String(savedMind) : 'Good';
     });
+
+    const [dayOfWeek, setDayOfWeek] = useState(() => {
+        const today = new Date();
+        return today.toLocaleDateString('ja-JP', { weekday: 'short' });
+    });
+
+    const updateDayOfWeek = (month, day) => {
+        const year = new Date().getFullYear();
+        const date = new Date(year, month - 1, day);
+        const weekday = date.toLocaleDateString('ja-JP', { weekday: 'short' });
+        setDayOfWeek(weekday);
+    };
 
     const handleDateChange = (month, day) => {
         setCurrentDate(`${month}/${day}`);
         setSelectedMonth(month);
         setSelectedDay(day);
+        updateDayOfWeek(month, day);
     };
 
     const handleMonthChange = (e) => {
@@ -61,7 +74,7 @@ function MetaData() {
         <>
             <div className='MetaData'>
                 <div className='date'>
-                    <div>本日の日付:</div>
+                    <div>日付:</div>
                     <select value={selectedMonth} onChange={handleMonthChange}>
                         {[...Array(12).keys()].map((m) => (
                             <option key={m + 1} value={m + 1}>{m + 1}</option>
@@ -72,7 +85,7 @@ function MetaData() {
                             <option key={d + 1} value={d + 1}>{d + 1}</option>
                         ))}
                     </select>
-                    <div>{currentDate}</div>
+                    <div>{currentDate}({dayOfWeek})</div>
                 </div>
                 <div className='time'>
                     <div>学習時間</div>
@@ -81,11 +94,12 @@ function MetaData() {
                             <option key={hour} value={hour}>{hour}</option>
                         ))}
                     </select>
+                    <div className='timeUnit'>h</div>
                 </div>
                 <div className='mind'>
-                    <div>今日の気持ち（1:Bad 5:Good）</div>
-                    <select value={selectedMind} onChange={handleMindChange}>
-                        {[1, 2, 3, 4, 5].map((value) => (
+                    <div>今日の気持ち</div>
+                    <select className='selectedMind' value={selectedMind} onChange={handleMindChange}>
+                        {['Very Good', 'Good', 'Neutral', 'Bad', 'Very Bad'].map((value) => (
                             <option key={value} value={value}>{value}</option>
                         ))}
                     </select>
