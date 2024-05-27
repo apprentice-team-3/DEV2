@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import MetaData from "./components/MetaData";
 import Header from "./components/header";
 import PDCA from "./components/pdca";
 import "./index.css";
@@ -9,6 +10,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Header />
+    <MetaData />
     <PDCA />
   </React.StrictMode>
 );
