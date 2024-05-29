@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from 'react-redux';
+import store from './store';
 import Header from "./components/header";
 import MetaData from "./components/MetaData";
 import PDCA from "./components/pdca";
@@ -9,8 +11,10 @@ import reportWebVitals from "./reportWebVitals";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Header />
-    <MetaData />
+    <Provider store={store}>
+      <Header />
+      <MetaData />
+    </Provider>,
     <PDCA />
   </React.StrictMode>
 );
