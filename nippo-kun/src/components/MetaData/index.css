@@ -30,3 +30,8 @@ select {
   width: 90px;
   height: 30px;
 }
+
+.Todo {
+  font-size: larger;
+  font-weight: bold;
+}
