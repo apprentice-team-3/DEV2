@@ -104,8 +104,8 @@ function MetaData() {
                         ))}
                     </select>
                 </div>
-                <div className='ToDo'>AtCoder</div>
             </div>
+            <div className='ToDo'>AtCoder</div>
         </>
     );
 }
