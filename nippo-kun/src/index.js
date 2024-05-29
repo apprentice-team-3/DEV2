@@ -5,6 +5,7 @@ import Header from "./components/header";
 import PDCA from "./components/pdca";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import Tomorrow from "./components/tomorrow";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,6 +13,7 @@ root.render(
     <Header />
     <MetaData />
     <PDCA />
+    <Tomorrow />
   </React.StrictMode>
 );
 
