@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import Header from "./components/header";
 import MetaData from "./components/MetaData";
+import Header from "./components/header";
 import PDCA from "./components/pdca";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
