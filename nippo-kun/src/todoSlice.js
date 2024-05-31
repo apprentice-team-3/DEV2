@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const yesterdayTasks = localStorage.getItem('yesterday') ? JSON.parse(localStorage.getItem('yesterday')) : ['タスク1', 'タスク2', 'タスク3'];
+const yesterdayTasks = localStorage.getItem('yesterday') ? JSON.parse(localStorage.getItem('yesterday')) : [];
 
 const initialState = {
     todo: yesterdayTasks[0],
