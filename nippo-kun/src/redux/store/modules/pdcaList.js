@@ -3,21 +3,32 @@ import { createSlice } from "@reduxjs/toolkit";
 const pdcaLister = createSlice({
   name: "pdcaLister",
   initialState: {
-    pdcaList: [{ plan: "", do: "", check: "", action: "" }],
+    pdcaList: [{ isOpen: true, plan: "", do: "", check: "", action: "" }],
   },
   reducers: {
     add(state, { type, payload }) {
-      state.pdcaList = [...state.pdcaList, payload];
+      state.pdcaList = state.pdcaList.map((item) => ({
+        ...item,
+        isOpen: false,
+      }));
+      state.pdcaList = [...state.pdcaList, { ...payload, isOpen: true }];
     },
     remove(state, { type, payload }) {
-      state.pdcaList = state.pdcaList.filter((item) => item.id !== payload);
+      if (state.pdcaList.length === 1) return;
+
+      state.pdcaList = state.pdcaList
+        .filter((item, index) => index !== payload)
+        .map((item, index) => {
+          if (index === payload - 1) return { ...item, isOpen: true };
+          return item;
+        });
     },
     write(state, { type, payload }) {
       state.pdcaList = state.pdcaList.map((item) => {
         if (item.id === payload.id) {
-          return { ...item, ...payload };
+          return { ...item, ...payload, isOpen: true };
         }
-        return item;
+        return { ...item, isOpen: false };
       });
     },
   },
