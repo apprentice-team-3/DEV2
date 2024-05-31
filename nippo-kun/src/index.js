@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import MetaData from "./components/MetaData";
 import Header from "./components/header";
-import PDCA from "./components/pdca";
+import PDCAList from "./components/pdcaList";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
@@ -11,7 +11,7 @@ root.render(
   <React.StrictMode>
     <Header />
     <MetaData />
-    <PDCA />
+    <PDCAList />
   </React.StrictMode>
 );
 
