@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from 'react-redux';
+import store from './store';
 import MetaData from "./components/MetaData";
 import Header from "./components/header";
 import PDCA from "./components/pdca";
@@ -10,8 +12,10 @@ import Tomorrow from "./components/tomorrow";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Header />
-    <MetaData />
+    <Provider store={store}>
+      <Header />
+      <MetaData />
+    </Provider>,
     <PDCA />
     <Tomorrow />
   </React.StrictMode>
