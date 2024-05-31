@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { setTodo } from './actions';
+import { useDispatch } from 'react-redux';
+import { setTodo } from '../../todoSlice';
 import './index.css';
 
-function Header({ setTodo }) {
+function Header() {
   const [yesterdayTasks, setYesterdayTasks] = useState(
     localStorage.getItem('yesterday')
       ? JSON.parse(localStorage.getItem('yesterday'))
       : []
   );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!localStorage.getItem('yesterday')) {
@@ -19,7 +21,7 @@ function Header({ setTodo }) {
   }, []);
 
   const handleClick = (task) => {
-    setTodo(task);
+    dispatch(setTodo(task));
   };
 
   return (
@@ -45,8 +47,4 @@ function Header({ setTodo }) {
   );
 }
 
-const mapDispatchToProps = {
-  setTodo,
-};
-
-export default connect(null, mapDispatchToProps)(Header);
+export default Header;

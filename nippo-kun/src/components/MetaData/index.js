@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import './index.css';
 
-function MetaData({ todo }) {
+function MetaData() {
+    const todo = useSelector((state) => state.todo.todo);
+
     const [currentDate, setCurrentDate] = useState(() => {
         const today = new Date();
         const month = today.getMonth() + 1;
@@ -105,14 +107,10 @@ function MetaData({ todo }) {
                         ))}
                     </select>
                 </div>
-                <div className='ToDo'>{todo}</div>
             </div>
+            <div className='ToDo'>{todo}</div>
         </>
     );
 }
 
-const mapStateToProps = (state) => ({
-    todo: state.todo.todo,
-});
-
-export default connect(mapStateToProps)(MetaData);
+export default MetaData;
