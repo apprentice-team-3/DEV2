@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import './index.css';
 
 function MetaData() {
+    const todo = useSelector((state) => state.todo.todo);
+
     const [currentDate, setCurrentDate] = useState(() => {
         const today = new Date();
         const month = today.getMonth() + 1;
@@ -105,7 +108,7 @@ function MetaData() {
                     </select>
                 </div>
             </div>
-            <div className='ToDo'>AtCoder</div>
+            <div className='ToDo'>{todo}</div>
         </>
     );
 }
