@@ -1,17 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 import MetaData from "./components/MetaData";
 import Header from "./components/header";
 import PDCA from "./components/pdca";
 import "./index.css";
+import store from "./redux/store";
 import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
-    <Header />
-    <MetaData />
-    <PDCA />
+    <Provider store={store}>
+      <Header />
+      <MetaData />
+      <PDCA />
+    </Provider>
   </React.StrictMode>
 );
 
