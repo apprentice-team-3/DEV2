@@ -75,14 +75,6 @@ export default function MultiTextarea({ title, placeholder }) {
           dangerouslySetInnerHTML={{ __html: getSanitizedMarkdown(content) }}
         />
       </div>
-      {todos.map((text, index) => (
-        <div key={index} className="multi__textarea__item">
-          <div
-            className="multi__textarea__block"
-            dangerouslySetInnerHTML={{ __html: getSanitizedMarkdown(text) }}
-          ></div>
-        </div>
-      ))}
     </div>
   );
 }
