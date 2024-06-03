@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import { marked } from "marked";
 import React, { useState } from "react";
 import sanitizeHtml from "sanitize-html";
@@ -6,7 +7,10 @@ import "./index.css";
 export default function Single({ title, placeholder, order = "PDCA" }) {
   const [markdown, setMarkdown] = useState("");
   const [showFeedback, setShowFeedBack] = useState("");
-  const [feedbackText, setFeedbackText] = useState("");
+  const [commonFeedbackText, setCommonFeedbackText] = useState("");
+  const [addFeedbackText, setAddFeedbackText] = useState("");
+
+  const [isTruncated, setIsTruncated] = useState(false);
   const markedText = sanitizeHtml(markdown, {
     allowedTags: [],
     disallowedTagsMode: "recursiveEscape",
@@ -19,31 +23,75 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
 
   const htmlText = marked.parse(markedText);
 
-  const onClick = async () => {
+  const onFeedbackClick = async () => {
     setShowFeedBack(true);
-    setFeedbackText("AIが生成中です...");
+    setCommonFeedbackText("AIがフィードバックを生成中です...");
 
-    console.log(process.env.REACT_APP_SERVER_URL);
+    try {
+      const response = await fetch(
+        "https://express-hello-world-a3nc.onrender.com/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            value: markdown,
+            order,
+          }),
+        }
+      );
 
-    const response = await fetch(process.env.REACT_APP_SERVER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        value: markdown,
-        order,
-      }),
-    });
+      if (response.ok) {
+        response.json().then((data) => {
+          const { generatedText } = data;
+          setIsTruncated(false);
 
-    if (response.ok) {
-      response.json().then((data) => {
-        const { generatedText } = data;
-        setFeedbackText(marked.parse(generatedText));
-      });
-    } else {
-      setFeedbackText("エラーが発生しました");
+          if (generatedText.length > 128) {
+            setCommonFeedbackText(marked.parse(generatedText.slice(0, 128)));
+            setAddFeedbackText(marked.parse(generatedText.slice(128)));
+            // const value = marked.parse(
+            //   generatedText.slice(0, 128) + "...\n **続きを読むにはクリック**"
+            // );
+            setIsTruncated(true);
+          } else {
+            setCommonFeedbackText(marked.parse(generatedText));
+          }
+        });
+      } else {
+        setIsTruncated(false);
+        setCommonFeedbackText(
+          marked.parse(
+            "エラーが発生しました\nしばらく時間を置いてから実行してください"
+          )
+        );
+      }
+    } catch (e) {
+      setIsTruncated(false);
+      setCommonFeedbackText(
+        marked.parse(
+          "エラーが発生しました\nしばらく時間を置いてから実行してください"
+        )
+      );
+      console.error(e);
     }
+  };
+
+  const onFeedbackTextClick = (e) => {
+    e.preventDefault();
+
+    if (isTruncated) {
+      setIsTruncated(false);
+      const $dom = document.querySelector(".single__feedback__wrapper");
+      $dom.scrollIntoView({ behavior: "smooth" });
+    } else {
+      setIsTruncated(true);
+    }
+  };
+
+  const singleFeedbackClassNames = {
+    single__feedback__body: true,
+    truncate: isTruncated,
   };
 
   return (
@@ -65,14 +113,31 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
           <div dangerouslySetInnerHTML={{ __html: htmlText }} />
         </div>
       </div>
-      <button className="single__button" onClick={onClick}>
+      <button className={"single__button"} onClick={onFeedbackClick}>
         フィードバックを取得する
       </button>
       {showFeedback && (
         <div
-          className="single__feedback"
-          dangerouslySetInnerHTML={{ __html: feedbackText }}
-        ></div>
+          className="single__feedback__wrapper"
+          onClick={onFeedbackTextClick}
+        >
+          <div
+            dangerouslySetInnerHTML={{
+              __html: commonFeedbackText,
+            }}
+          ></div>
+          {isTruncated && (
+            <div className="single__feedback__more">続きを読むにはクリック</div>
+          )}
+          <div className={classnames(singleFeedbackClassNames)}>
+            <div
+              className={"single__feedback hidden"}
+              dangerouslySetInnerHTML={{
+                __html: addFeedbackText,
+              }}
+            ></div>
+          </div>
+        </div>
       )}
     </div>
   );
