@@ -4,6 +4,7 @@ const yesterdayTasks = localStorage.getItem('yesterday') ? JSON.parse(localStora
 
 const initialState = {
     todo: yesterdayTasks[0],
+    tomorrow: [],
 };
 
 const todoSlice = createSlice({
@@ -13,8 +14,14 @@ const todoSlice = createSlice({
         setTodo: (state, action) => {
             state.todo = action.payload;
         },
+        addTodo: (state, action) => {
+            state.tomorrow.push(action.payload);
+        },
+        removeTodo: (state, action) => {
+            state.tomorrow = state.tomorrow.filter((_, index) => index !== action.payload);
+        },
     },
 });
 
-export const { setTodo } = todoSlice.actions;
+export const { setTodo, addTodo, removeTodo } = todoSlice.actions;
 export default todoSlice.reducer;
