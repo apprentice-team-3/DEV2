@@ -20,8 +20,12 @@ const todoSlice = createSlice({
         removeTodo: (state, action) => {
             state.tomorrow = state.tomorrow.filter((_, index) => index !== action.payload);
         },
+        updateTodo: (state, action) => {
+        const { index, content } = action.payload;
+        state.tomorrow[index] = content;
+        }
     },
 });
 
-export const { setTodo, addTodo, removeTodo } = todoSlice.actions;
+export const { setTodo, addTodo, removeTodo, updateTodo } = todoSlice.actions;
 export default todoSlice.reducer;
