@@ -1,20 +1,24 @@
 import { marked } from "marked";
 import React, { useState } from "react";
 import sanitizeHtml from "sanitize-html";
+import { useDispatch, useSelector } from 'react-redux';
+import { addTodo, removeTodo } from "../../../todoSlice";
 import "./index.css";
 
 export default function MultiTextarea({ title, placeholder }) {
   const [content, setContent] = useState("");
-  const [textareaList, setTextareaList] = useState([]);
+  const todos = useSelector((state) => state.todo.tomorrow);
+  const dispatch = useDispatch();
 
   const handleAddTextarea = () => {
-    setTextareaList([...textareaList, content]);
-    setContent("");
+    if(content.trim()) {
+      dispatch(addTodo(content));
+      setContent("");
+    }
   };
 
   const handleRemoveTextarea = (index) => {
-    const newList = textareaList.filter((_, i) => i !== index);
-    setTextareaList(newList);
+    dispatch(removeTodo(index));
   };
 
   const getSanitizedMarkdown = (markdown) => {
@@ -51,7 +55,7 @@ export default function MultiTextarea({ title, placeholder }) {
           dangerouslySetInnerHTML={{ __html: getSanitizedMarkdown(content) }}
         />
       </div>
-      {textareaList.map((text, index) => (
+      {todos.map((text, index) => (
         <div key={index} className="multi__textarea__item">
           <div
             className="multi__textarea__block"
