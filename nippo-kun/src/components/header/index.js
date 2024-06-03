@@ -33,7 +33,7 @@ function Header() {
           {yesterdayTasks.length > 0 ? (
             <ul>
               {yesterdayTasks.map((task, index) => (
-                <li key={index} onClick={() => handleClick(task)}>
+                <li className='yesterday-task' key={index} onClick={() => handleClick(task)}>
                   {task}
                 </li>
               ))}

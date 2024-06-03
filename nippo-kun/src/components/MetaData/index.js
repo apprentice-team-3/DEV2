@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import './index.css';
 
 function MetaData() {
-    const todo = useSelector((state) => state.todo.todo);
+    const todo = useSelector((state) => state.todor.todo);
 
     const [currentDate, setCurrentDate] = useState(() => {
         const today = new Date();
@@ -73,6 +73,17 @@ function MetaData() {
         localStorage.setItem('defaultTodayMind', newMind);
     };
 
+    const handlePreviousDay = () => {
+        const year = new Date().getFullYear();
+        let date = new Date(year, selectedMonth - 1, selectedDay);
+        date.setDate(date.getDate() - 1);
+
+        const newMonth = date.getMonth() + 1;
+        const newDay = date.getDate();
+
+        handleDateChange(newMonth, newDay);
+    };
+
     return (
         <>
             <div className='MetaData'>
@@ -89,6 +100,7 @@ function MetaData() {
                         ))}
                     </select>
                     <div>{currentDate}({dayOfWeek})</div>
+                    <button onClick={handlePreviousDay}>前日に切り替える</button>
                 </div>
                 <div className='time'>
                     <div>学習時間</div>

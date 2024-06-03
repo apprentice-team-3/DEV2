@@ -14,7 +14,7 @@ root.render(
     <Provider store={store}>
       <Header />
       <MetaData />
-    </Provider>,
+    </Provider>
     <PDCA />
   </React.StrictMode>
 );

@@ -31,7 +31,8 @@ select {
   height: 30px;
 }
 
-.Todo {
+.ToDo {
   font-size: larger;
   font-weight: bold;
+  padding: 10px;
 }
