@@ -3,19 +3,19 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import MetaData from "./components/MetaData";
 import Header from "./components/header";
-import PDCAList from "./components/pdcaList";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import store from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <Header />
       <MetaData />
+      <PDCA />
     </Provider>
-    <PDCAList />
   </React.StrictMode>
 );
 
