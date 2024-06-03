@@ -21,20 +21,21 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
 
   const onClick = async () => {
     setShowFeedBack(true);
-    setFeedbackText("AIが生成中です...");
+    setFeedbackText("AIがフィードバックを生成中です...");
 
-    console.log(process.env.REACT_APP_SERVER_URL);
-
-    const response = await fetch(process.env.REACT_APP_SERVER_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        value: markdown,
-        order,
-      }),
-    });
+    const response = await fetch(
+      "https://express-hello-world-a3nc.onrender.com",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          value: markdown,
+          order,
+        }),
+      }
+    );
 
     if (response.ok) {
       response.json().then((data) => {
