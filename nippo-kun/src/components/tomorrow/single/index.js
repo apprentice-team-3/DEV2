@@ -2,7 +2,7 @@ import { marked } from "marked";
 import React, { useState, useRef, useEffect } from "react";
 import sanitizeHtml from "sanitize-html";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, removeTodo } from "../../../todoSlice";
+import { addTodo } from "../../../todoSlice";
 import "./index.css";
 
 export default function MultiTextarea({ title, placeholder }) {
@@ -16,10 +16,6 @@ export default function MultiTextarea({ title, placeholder }) {
       dispatch(addTodo(content));
       setContent("");
     }
-  };
-
-  const handleRemoveTextarea = (index) => {
-    dispatch(removeTodo(index));
   };
 
   const getSanitizedMarkdown = (markdown) => {
@@ -85,12 +81,6 @@ export default function MultiTextarea({ title, placeholder }) {
             className="multi__textarea__block"
             dangerouslySetInnerHTML={{ __html: getSanitizedMarkdown(text) }}
           ></div>
-          <button
-            className="multi__button remove"
-            onClick={() => handleRemoveTextarea(index)}
-          >
-            ー
-          </button>
         </div>
       ))}
     </div>
