@@ -5,3 +5,10 @@
   grid-column-gap: 20px;
   padding-top: 0px;
 }
+
+.button__wrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 0 40px;
+}
