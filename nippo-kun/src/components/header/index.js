@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setTodo } from '../../todoSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { setTodo, setTasks } from '../../todoSlice';
 import './index.css';
 
 function Header() {
-  const [yesterdayTasks, setYesterdayTasks] = useState(
-    localStorage.getItem('yesterday')
-      ? JSON.parse(localStorage.getItem('yesterday'))
-      : []
-  );
-
+  const yesterdayTasks = useSelector((state) => state.todor.tasks);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!localStorage.getItem('yesterday')) {
       const testTasks = ['タスク1', 'タスク2', 'タスク3'];
       localStorage.setItem('yesterday', JSON.stringify(testTasks));
-      setYesterdayTasks(testTasks);
+      dispatch(setTasks(testTasks));
     }
-  }, []);
+  }, [dispatch]);
 
   const handleClick = (task) => {
     dispatch(setTodo(task));

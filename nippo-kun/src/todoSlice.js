@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const yesterdayTasks = localStorage.getItem('yesterday') ? JSON.parse(localStorage.getItem('yesterday')) : [];
 
 const initialState = {
-    todo: yesterdayTasks[0],
+    tasks: yesterdayTasks,
+    selectedTask: yesterdayTasks[0] || '',
 };
 
 const todoSlice = createSlice({
@@ -11,10 +12,18 @@ const todoSlice = createSlice({
     initialState,
     reducers: {
         setTodo: (state, action) => {
-            state.todo = action.payload;
+            state.selectedTask = action.payload;
+        },
+        updateTask: (state, action) => {
+            const { index, newTask } = action.payload;
+            state.tasks[index] = newTask;
+            state.selectedTask = newTask;
+        },
+        setTasks: (state, action) => {
+            state.tasks = action.payload;
         },
     },
 });
 
-export const { setTodo } = todoSlice.actions;
+export const { setTodo, updateTask, setTasks } = todoSlice.actions;
 export default todoSlice.reducer;

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setTodo, updateTask } from '../../todoSlice';
 import './index.css';
 
 function MetaData() {
-    const todo = useSelector((state) => state.todor.todo);
+    const { selectedTask, tasks } = useSelector((state) => state.todor);
+    const dispatch = useDispatch();
 
     const [currentDate, setCurrentDate] = useState(() => {
         const today = new Date();
@@ -36,6 +38,9 @@ function MetaData() {
         const today = new Date();
         return today.toLocaleDateString('ja-JP', { weekday: 'short' });
     });
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [editValue, setEditValue] = useState(selectedTask);
 
     const updateDayOfWeek = (month, day) => {
         const year = new Date().getFullYear();
@@ -84,6 +89,26 @@ function MetaData() {
         handleDateChange(newMonth, newDay);
     };
 
+    const handleEditClick = () => {
+        setIsEditing(true);
+        setEditValue(selectedTask);
+    };
+
+    const handleEditChange = (e) => {
+        setEditValue(e.target.value);
+    };
+
+    const handleEditComplete = () => {
+        const taskIndex = tasks.findIndex(task => task === selectedTask);
+        const updatedTasks = [...tasks];
+        updatedTasks[taskIndex] = editValue;
+        localStorage.setItem('yesterday', JSON.stringify(updatedTasks));
+
+        dispatch(updateTask({ index: taskIndex, newTask: editValue }));
+
+        setIsEditing(false);
+    };
+
     return (
         <>
             <div className='MetaData'>
@@ -114,13 +139,25 @@ function MetaData() {
                 <div className='mind'>
                     <div>今日の気持ち</div>
                     <select className='selectedMind' value={selectedMind} onChange={handleMindChange}>
-                        {['Very Good', 'Good', 'Neutral', 'Bad', 'Very Bad'].map((value) => (
+                        {['とても良い', '良い', '普通', '悪い', 'とても悪い'].map((value) => (
                             <option key={value} value={value}>{value}</option>
                         ))}
                     </select>
                 </div>
             </div>
-            <div className='ToDo'>{todo}</div>
+            <div className='ToDo'>
+                {isEditing ? (
+                    <>
+                        <textarea value={editValue} onChange={handleEditChange} />
+                        <button onClick={handleEditComplete}>完了</button>
+                    </>
+                ) : (
+                    <>
+                        {selectedTask}
+                        <button onClick={handleEditClick}>編集</button>
+                    </>
+                )}
+            </div>
         </>
     );
 }
