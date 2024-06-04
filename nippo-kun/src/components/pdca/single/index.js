@@ -8,6 +8,7 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
   const [markdown, setMarkdown] = useState("");
   const [showFeedback, setShowFeedBack] = useState("");
   const [commonFeedbackText, setCommonFeedbackText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [addFeedbackText, setAddFeedbackText] = useState("");
 
   const [isTruncated, setIsTruncated] = useState(false);
@@ -25,6 +26,7 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
 
   const onFeedbackClick = async () => {
     setShowFeedBack(true);
+    setIsLoading(true);
     setCommonFeedbackText("AIがフィードバックを生成中です...");
 
     try {
@@ -46,13 +48,12 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
         response.json().then((data) => {
           const { generatedText } = data;
           setIsTruncated(false);
+          setIsLoading(false);
 
           if (generatedText.length > 128) {
             setCommonFeedbackText(marked.parse(generatedText.slice(0, 128)));
             setAddFeedbackText(marked.parse(generatedText.slice(128)));
-            // const value = marked.parse(
-            //   generatedText.slice(0, 128) + "...\n **続きを読むにはクリック**"
-            // );
+
             setIsTruncated(true);
           } else {
             setCommonFeedbackText(marked.parse(generatedText));
@@ -60,6 +61,7 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
         });
       } else {
         setIsTruncated(false);
+        setIsLoading(false);
         setCommonFeedbackText(
           marked.parse(
             "エラーが発生しました\nしばらく時間を置いてから実行してください"
@@ -68,6 +70,7 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
       }
     } catch (e) {
       setIsTruncated(false);
+      setIsLoading(false);
       setCommonFeedbackText(
         marked.parse(
           "エラーが発生しました\nしばらく時間を置いてから実行してください"
@@ -126,7 +129,7 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
               __html: commonFeedbackText,
             }}
           ></div>
-          {isTruncated && (
+          {isTruncated && !isLoading && (
             <div className="single__feedback__more">続きを読むにはクリック</div>
           )}
           <div className={classnames(singleFeedbackClassNames)}>
