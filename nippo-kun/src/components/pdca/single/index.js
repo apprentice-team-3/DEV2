@@ -23,8 +23,6 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
     setShowFeedBack(true);
     setFeedbackText("AIが生成中です...");
 
-    console.log(process.env.REACT_APP_SERVER_URL);
-
     const response = await fetch(process.env.REACT_APP_SERVER_URL, {
       method: "POST",
       headers: {
