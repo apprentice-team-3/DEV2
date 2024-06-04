@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { marked } from "marked";
 import sanitizeHtml from "sanitize-html";
@@ -9,6 +9,7 @@ const TodoList = () => {
   const dispatch = useDispatch();
   const [editIndex, setEditIndex] = useState(null);
   const [editContent, setEditContent] = useState("");
+  const textareaRef = useRef(null);
 
   const handleRemoveTextarea = (index) => {
     dispatch(removeTodo(index));
@@ -41,6 +42,28 @@ const TodoList = () => {
     return marked.parse(markedText);
   };
 
+  useEffect(() => {
+      const textarea  = textareaRef.current;
+      const handleKeyDown = (event) => {
+        if (event.key === 'Enter' && !event.isComposing) {
+          if (event.metaKey) {
+            event.preventDefault();
+            handleSaveTodo(editIndex);
+          }
+        }
+      };
+
+      if (textarea) {
+        textarea.addEventListener('keydown', handleKeyDown);
+      }
+
+      return () => {
+        if (textarea) {
+          textarea.removeEventListener("keydown", handleKeyDown);
+        }
+      };
+    }, [editIndex, editContent]);
+
   return (
     <div>
       <h2>明日やることリスト</h2>
@@ -56,10 +79,12 @@ const TodoList = () => {
             {editIndex === index ? (
             <div>
               <textarea
+              ref={textareaRef}
               value={editContent}
               onChange={(e) => setEditContent(e.target.value)}
               ></textarea>
               <button
+              className="multi__button save"
               onClick={() => handleSaveTodo(index)}
               >
                 保存

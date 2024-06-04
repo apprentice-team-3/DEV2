@@ -1,7 +1,7 @@
-import { marked } from "marked";
 import React, { useState, useRef, useEffect } from "react";
-import sanitizeHtml from "sanitize-html";
 import { useDispatch, useSelector } from "react-redux";
+import { marked } from "marked";
+import sanitizeHtml from "sanitize-html";
 import { addTodo } from "../../../todoSlice";
 import "./index.css";
 
