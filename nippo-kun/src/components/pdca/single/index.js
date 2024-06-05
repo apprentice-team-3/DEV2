@@ -1,12 +1,15 @@
 import { marked } from "marked";
 import React, { useState } from "react";
 import sanitizeHtml from "sanitize-html";
+import Loading from "../../loading";
 import "./index.css";
 
 export default function Single({ title, placeholder, order = "PDCA" }) {
   const [markdown, setMarkdown] = useState("");
   const [showFeedback, setShowFeedBack] = useState("");
   const [feedbackText, setFeedbackText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const markedText = sanitizeHtml(markdown, {
     allowedTags: [],
     disallowedTagsMode: "recursiveEscape",
@@ -22,8 +25,7 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
   const onClick = async () => {
     setShowFeedBack(true);
     setFeedbackText("AIが生成中です...");
-
-    console.log(process.env.REACT_APP_SERVER_URL);
+    setIsLoading(true);
 
     const response = await fetch(process.env.REACT_APP_SERVER_URL, {
       method: "POST",
@@ -40,9 +42,11 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
       response.json().then((data) => {
         const { generatedText } = data;
         setFeedbackText(marked.parse(generatedText));
+        setIsLoading(false);
       });
     } else {
       setFeedbackText("エラーが発生しました");
+      setIsLoading(false);
     }
   };
 
@@ -68,7 +72,8 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
       <button className="single__button" onClick={onClick}>
         フィードバックを取得する
       </button>
-      {showFeedback && (
+      {isLoading && <Loading />}
+      {showFeedback && !isLoading && (
         <div
           className="single__feedback"
           dangerouslySetInnerHTML={{ __html: feedbackText }}
