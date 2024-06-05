@@ -2,6 +2,7 @@ import Add from "../buttons/add";
 import Minus from "../buttons/minus";
 import "./index.css";
 import Single from "./single";
+import TotalReview from "./total-review";
 
 export default function PDCA() {
   return (
@@ -16,6 +17,7 @@ export default function PDCA() {
         <Add />
         <Minus />
       </div>
+      <TotalReview />
     </>
   );
 }
