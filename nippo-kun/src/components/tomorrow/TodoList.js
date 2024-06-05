@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { marked } from "marked";
-import sanitizeHtml from "sanitize-html";
 import { removeTodo, updateTodo } from "../../todoSlice";
 
 const TodoList = () => {
@@ -26,20 +24,6 @@ const TodoList = () => {
       content: editContent
     }));
     setEditIndex(null);
-  };
-
-  const getSanitizedMarkdown = (markdown) => {
-    const markedText = sanitizeHtml(markdown, {
-      allowedTags: [],
-      disallowedTagsMode: "recursiveEscape",
-    });
-
-    marked.setOptions({
-      gfm: true,
-      breaks: true,
-    });
-
-    return marked.parse(markedText);
   };
 
   useEffect(() => {
@@ -91,10 +75,9 @@ const TodoList = () => {
               </button>
             </div>
             ) : (
-              <div
-              onClick={() => handleEditTodo(index)}
-              dangerouslySetInnerHTML={{__html: getSanitizedMarkdown(todo) }}
-              ></div>
+              <div onClick={() => handleEditTodo(index)}>
+                {todo}
+              </div>
             )}
           </li>
         ))}
