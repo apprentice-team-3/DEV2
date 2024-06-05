@@ -1,15 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Provider } from 'react-redux';
-import store from './store';
+import { Provider } from "react-redux";
 import MetaData from "./components/MetaData";
 import Header from "./components/header";
 import PDCA from "./components/pdca";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import store from "./store";
 import Tomorrow from "./components/tomorrow";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
