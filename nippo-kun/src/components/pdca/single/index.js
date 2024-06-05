@@ -2,6 +2,7 @@ import classnames from "classnames";
 import { marked } from "marked";
 import React, { useState } from "react";
 import sanitizeHtml from "sanitize-html";
+import Loading from "../../loading";
 import "./index.css";
 
 export default function Single({ title, placeholder, order = "PDCA" }) {
@@ -119,7 +120,8 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
       <button className={"single__button"} onClick={onFeedbackClick}>
         フィードバックを取得する
       </button>
-      {showFeedback && (
+      {isLoading && <Loading />}
+      {showFeedback && !isLoading && (
         <div
           className="single__feedback__wrapper"
           onClick={onFeedbackTextClick}
