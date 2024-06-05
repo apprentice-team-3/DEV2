@@ -20,7 +20,7 @@
   position: relative;
 
   &:after {
-    content: "全体を確認する";
+    content: "PDCA全体の観点からフィードバックを取得する";
     position: absolute;
     top: 50%;
     left: 50%;
