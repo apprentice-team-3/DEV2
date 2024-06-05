@@ -31,12 +31,12 @@ const todoSlice = createSlice({
     },
 });
 
-const digressionsSlice = createSlice({
+const digressionSlice = createSlice({
     name: 'digression',
     initialState: { text: ''},
     reducers: {
         setText: (state, action) => {
-            state,text = action.payload;
+            state.text = action.payload;
         },
     },
 });
@@ -44,9 +44,9 @@ const digressionsSlice = createSlice({
 export const { setTodo, addTodo, removeTodo, updateTodo } = todoSlice.actions;
 export const { setText } = digressionSlice.actions;
 
-export const store = configureStore({
-    reducer: {
+const rootReducer = {
         todo: todoSlice.reducer,
-        digression: digressionsSlice.reducer,
-    },
-});
+        digression: digressionSlice.reducer,
+};
+
+export default rootReducer;
