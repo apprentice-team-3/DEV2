@@ -38,7 +38,11 @@ const digressionSlice = createSlice({
     initialState: { text: ''},
     reducers: {
         setText: (state, action) => {
-            const markedText = marked(action.payload, {
+            state.text = action.payload;
+        },
+    setHTMLText:  (state, action) => {
+        const markdownText = action.payload;
+        const markedText = marked(markdownText, {
                 gfm: true,
                 breaks: true,
             });
@@ -46,7 +50,7 @@ const digressionSlice = createSlice({
             state.text = sanitizeHtml(markedText, {
                 allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
                 allowedAttributes: {
-                    ...sanitizeHtml.defaults.allowedAttributes,
+                    a: ['href', 'name', 'target'],
                     img: ['src', 'alt'],
                 },
             });
