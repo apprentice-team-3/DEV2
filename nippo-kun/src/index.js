@@ -2,8 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import MetaData from "./components/MetaData";
+import AllCheckButton from "./components/buttons/all-check-button";
 import Header from "./components/header";
 import PDCA from "./components/pdca";
+import Tomorrow from "./components/tomorrow";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import store from "./store";
@@ -16,6 +18,8 @@ root.render(
       <Header />
       <MetaData />
       <PDCA />
+      <AllCheckButton />
+      <Tomorrow />
     </Provider>
   </React.StrictMode>
 );
