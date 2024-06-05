@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { marked } from "marked";
-import sanitizeHtml from "sanitize-html";
 import { addTodo } from "../../../todoSlice";
 import "./index.css";
 
@@ -16,20 +14,6 @@ export default function MultiTextarea({ title, placeholder }) {
       dispatch(addTodo(content));
       setContent("");
     }
-  };
-
-  const getSanitizedMarkdown = (markdown) => {
-    const markedText = sanitizeHtml(markdown, {
-      allowedTags: [],
-      disallowedTagsMode: "recursiveEscape",
-    });
-
-    marked.setOptions({
-      gfm: true,
-      breaks: true,
-    });
-
-    return marked.parse(markedText);
   };
 
     useEffect(() => {
@@ -68,12 +52,6 @@ export default function MultiTextarea({ title, placeholder }) {
         <button className="multi__button add" onClick={handleAddTextarea}>
           ＋
         </button>
-      </div>
-      <div className="multi__preview">
-        <p>プレビュー</p>
-        <div
-          dangerouslySetInnerHTML={{ __html: getSanitizedMarkdown(content) }}
-        />
       </div>
     </div>
   );
