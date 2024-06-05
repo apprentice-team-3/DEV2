@@ -67,12 +67,12 @@ const TodoList = () => {
 
   return (
     <div>
-      <h2>明日やることリスト</h2>
+      <h2 className="title">明日やることリスト</h2>
       <ul>
         {todos.map((todo, index) => (
           <li key={index} className="todo-item">
             <button
-            className="multi__button remove"
+            className="button remove"
             onClick={() => handleRemoveTextarea(index)}
           >
             ー
@@ -81,11 +81,12 @@ const TodoList = () => {
               <div className="edit-container">
                 <textarea
                   ref={textareaRef}
+                  className="textarea"
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
                 ></textarea>
                 <button
-                  className="multi__button save"
+                  className="button save"
                   onClick={() => handleSaveTodo(index)}
                 >
                   保存
@@ -93,7 +94,7 @@ const TodoList = () => {
               </div>
             ) : (
               <div
-              style={{ flex: 1}}
+              className="textarea-block"
               onClick={() => handleEditTodo(index)}
               dangerouslySetInnerHTML={{__html: getSanitizedMarkdown(todo) }}
               ></div>
