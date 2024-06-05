@@ -1,4 +1,6 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { marked } from 'marked';
+import sanitizeHtml from 'sanitize-html';
 
 const yesterdayTasks = localStorage.getItem('yesterday') ? JSON.parse(localStorage.getItem('yesterday')) : [];
 const storedTomorrow = localStorage.getItem('tomorrow') ? JSON.parse(localStorage.getItem('tomorrow')) : [];
@@ -36,7 +38,18 @@ const digressionSlice = createSlice({
     initialState: { text: ''},
     reducers: {
         setText: (state, action) => {
-            state.text = action.payload;
+            const markedText = marked(action.payload, {
+                gfm: true,
+                breaks: true,
+            });
+
+            state.text = sanitizeHtml(markedText, {
+                allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
+                allowedAttributes: {
+                    ...sanitizeHtml.defaults.allowedAttributes,
+                    img: ['src', 'alt'],
+                },
+            });
         },
     },
 });
