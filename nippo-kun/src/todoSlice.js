@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
 
 const yesterdayTasks = localStorage.getItem('yesterday') ? JSON.parse(localStorage.getItem('yesterday')) : [];
 
@@ -16,5 +16,22 @@ const todoSlice = createSlice({
     },
 });
 
+const digressionsSlice = createSlice({
+    name: 'digression',
+    initialState: { text: ''},
+    reducers: {
+        setText: (state, action) => {
+            state,text = action.payload;
+        },
+    },
+});
+
 export const { setTodo } = todoSlice.actions;
-export default todoSlice.reducer;
+export const { setText } = digressionSlice.actions;
+
+export const store = configureStore({
+    reducer: {
+        todo: todoSlice.reducer,
+        digression: digressionsSlice.reducer,
+    },
+});
