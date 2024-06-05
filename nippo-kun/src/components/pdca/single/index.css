@@ -48,10 +48,32 @@
   }
 }
 
-.single__feedback {
+.single__feedback__body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: 0.3s grid-template-rows ease;
+  cursor: pointer;
+  animation: fadeIn 0.3s ease-in-out;
+
+  &.truncate {
+    grid-template-rows: 0fr;
+  }
+}
+
+.single__feedback__wrapper {
   background-color: #f8f9fa;
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 4px;
-  animation: fadeIn 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.hidden {
+  overflow: hidden;
+}
+
+.single__feedback__more {
+  display: block;
+  text-align: center;
+  color: #007bff;
 }
