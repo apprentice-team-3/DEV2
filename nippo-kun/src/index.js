@@ -21,7 +21,6 @@ root.render(
       <AllCheckButton />
       <Tomorrow />
     </Provider>
-    ,
   </React.StrictMode>
 );
 
