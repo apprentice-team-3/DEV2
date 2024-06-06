@@ -23,6 +23,8 @@
 }
 
 .textarea-block p {
+  width: 100%;
+
   word-wrap: break-word;
   overflow-wrap: break-word;
 
@@ -32,7 +34,21 @@
 }
 
 .textarea {
-  
+  width: 100%;
+  resize: none;
+}
+
+/* 編集テキストエリア設定 */
+li {
+    width: 90%;
+    resize: none;
+    margin-left: 10px;
+    overflow-wrap: break-word;
+}
+
+/* 削除ボタンの位置を左寄せにする */
+ul {
+  padding-inline-start: 0px;
 }
 
 /* TODOアイテムのスタイル */
