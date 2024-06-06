@@ -46,10 +46,12 @@
 
 /* ボタンのスタイル */
 .button.remove {
+  display: block;
   align-items: center;
   justify-content: center;
-  width: 40px;
+  min-width: 40px;
   height: 40px;
+  border-radius: 50%;
   background-color: #dc3545;
   margin-bottom: 10px;
 }
