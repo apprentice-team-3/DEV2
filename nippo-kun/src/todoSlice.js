@@ -1,4 +1,4 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { marked } from 'marked';
 import sanitizeHtml from 'sanitize-html';
 
@@ -12,7 +12,7 @@ const initialState = {
 
 const todoSlice = createSlice({
     name: 'todo',
-    initialState,
+    initialState: initialState,
     reducers: {
         setTodo: (state, action) => {
             state.todo = action.payload;
@@ -35,19 +35,15 @@ const todoSlice = createSlice({
 
 const digressionSlice = createSlice({
     name: 'digression',
-    initialState: { text: ''},
+    initialState: { markdown: '', html: '' },
     reducers: {
-        setText: (state, action) => {
-            state.text = action.payload;
-        },
-    setHTMLText:  (state, action) => {
-        const markdownText = action.payload;
-        const markedText = marked(markdownText, {
+        setMarkdown: (state, action) => {
+            state.markdown = action.payload;
+            const markedText = marked(action.payload, {
                 gfm: true,
                 breaks: true,
             });
-
-            state.text = sanitizeHtml(markedText, {
+            state.html = sanitizeHtml(markedText, {
                 allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img']),
                 allowedAttributes: {
                     a: ['href', 'name', 'target'],
@@ -55,15 +51,16 @@ const digressionSlice = createSlice({
                 },
             });
         },
+        setHTML: (state, action) => {
+            state.html = action.payload;
+        }
     },
 });
 
 export const { setTodo, addTodo, removeTodo, updateTodo } = todoSlice.actions;
-export const { setText } = digressionSlice.actions;
+export const { setMarkdown, setHTML } = digressionSlice.actions;
 
-const rootReducer = {
-        todo: todoSlice.reducer,
-        digression: digressionSlice.reducer,
+export const rootReducer = {
+    todo: todoSlice.reducer,
+    digression: digressionSlice.reducer,
 };
-
-export default rootReducer;
