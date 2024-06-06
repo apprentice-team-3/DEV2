@@ -40,10 +40,10 @@
 
 /* 編集テキストエリア設定 */
 li {
-    width: 90%;
-    resize: none;
-    margin-left: 10px;
-    overflow-wrap: break-word;
+  width: 90%;
+  resize: none;
+  margin-left: 10px;
+  overflow-wrap: break-word;
 }
 
 /* 削除ボタンの位置を左寄せにする */
@@ -54,7 +54,7 @@ ul {
 /* TODOアイテムのスタイル */
 .todo-item {
   display: flex;
-  align-items: center;
+  align-items: start;
 }
 
 .todo-item button {
@@ -81,6 +81,12 @@ ul {
   padding: 10px 20px;
   width: auto;
   display: inline-block;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+
+  &.active {
+    opacity: 1;
+  }
 }
 
 .button:hover {

@@ -11,6 +11,15 @@ const TodoList = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [editContent, setEditContent] = useState("");
   const textareaRef = useRef(null);
+  const saveRef = useRef(null);
+
+  useEffect(() => {
+    if (editIndex !== null) {
+      setTimeout(() => {
+        saveRef.current.classList.add("active");
+      });
+    }
+  }, [editIndex]);
 
   const handleRemoveTextarea = (index) => {
     dispatch(removeTodo(index));
@@ -90,6 +99,7 @@ const TodoList = () => {
                 <button
                   className="button save"
                   onClick={() => handleSaveTodo(index)}
+                  ref={saveRef}
                 >
                   保存
                 </button>
