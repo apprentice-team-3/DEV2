@@ -74,6 +74,7 @@ ul {
   border-radius: 50%;
   background-color: #dc3545;
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .button.save {
@@ -81,6 +82,7 @@ ul {
   padding: 10px 20px;
   width: auto;
   display: inline-block;
+  cursor: pointer;
   transition: opacity 0.3s ease;
   opacity: 0;
 
