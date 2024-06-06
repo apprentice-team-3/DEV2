@@ -1,7 +1,9 @@
 import classnames from "classnames";
 import { marked } from "marked";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import sanitizeHtml from "sanitize-html";
+import { write } from "../../../redux/store/modules/pdcaList";
 import Loading from "../../loading";
 import "./index.css";
 
@@ -13,6 +15,14 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
   const [addFeedbackText, setAddFeedbackText] = useState("");
 
   const [isTruncated, setIsTruncated] = useState(false);
+  const dispatch = useDispatch();
+
+  const pdcaList = useSelector(
+    (state) => state.pdcaLister && state.pdcaLister.pdcaList
+  );
+
+  console.log(pdcaList);
+
   const markedText = sanitizeHtml(markdown, {
     allowedTags: [],
     disallowedTagsMode: "recursiveEscape",
@@ -24,6 +34,26 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
   });
 
   const htmlText = marked.parse(markedText);
+
+  const onChange = (e) => {
+    setMarkdown(e.target.value);
+    switch (order) {
+      case "Plan":
+        dispatch(write({ plan: e.target.value }));
+        break;
+      case "Do":
+        dispatch(write({ do: e.target.value }));
+        break;
+      case "Check":
+        dispatch(write({ check: e.target.value }));
+        break;
+      case "Action":
+        dispatch(write({ action: e.target.value }));
+        break;
+      default:
+        break;
+    }
+  };
 
   const onFeedbackClick = async () => {
     setShowFeedBack(true);
@@ -106,9 +136,7 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
         <textarea
           className="single__textarea"
           placeholder={placeholder}
-          onChange={(e) => {
-            setMarkdown(e.target.value);
-          }}
+          onChange={onChange}
         ></textarea>
       </div>
       <div className="single__preview">
