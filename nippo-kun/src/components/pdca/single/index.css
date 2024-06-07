@@ -8,7 +8,6 @@
   position: relative;
   border: 1px solid #ccc;
   border-radius: 8px;
-  min-height: 350px;
   padding: 10px 0;
   margin-bottom: 10px;
 }
@@ -84,4 +83,8 @@
 }
 
 .bn-container[data-theming-css] .bn-editor * {
+}
+
+.bn-editor {
+  min-height: 350px;
 }
