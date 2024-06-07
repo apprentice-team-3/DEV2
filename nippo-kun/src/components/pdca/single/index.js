@@ -3,8 +3,8 @@ import { marked } from "marked";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import sanitizeHtml from "sanitize-html";
-import { write } from "../../../redux/store/modules/pdcaList";
 import Loading from "../../loading";
+import Editor from "./Editor";
 import "./index.css";
 
 export default function Single({ title, placeholder, order = "PDCA" }) {
@@ -21,8 +21,6 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
     (state) => state.pdcaLister && state.pdcaLister.pdcaList
   );
 
-  console.log(pdcaList);
-
   const markedText = sanitizeHtml(markdown, {
     allowedTags: [],
     disallowedTagsMode: "recursiveEscape",
@@ -34,26 +32,6 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
   });
 
   const htmlText = marked.parse(markedText);
-
-  const onChange = (e) => {
-    setMarkdown(e.target.value);
-    switch (order) {
-      case "Plan":
-        dispatch(write({ plan: e.target.value }));
-        break;
-      case "Do":
-        dispatch(write({ do: e.target.value }));
-        break;
-      case "Check":
-        dispatch(write({ check: e.target.value }));
-        break;
-      case "Action":
-        dispatch(write({ action: e.target.value }));
-        break;
-      default:
-        break;
-    }
-  };
 
   const onFeedbackClick = async () => {
     setShowFeedBack(true);
@@ -132,18 +110,7 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
     <div>
       <h2 className="single__title">{title}</h2>
       <div className="single__textarea__wrapper">
-        <div className="single__textarea__block"></div>
-        <textarea
-          className="single__textarea"
-          placeholder={placeholder}
-          onChange={onChange}
-        ></textarea>
-      </div>
-      <div className="single__preview">
-        <p>プレビュー</p>
-        <div className="">
-          <div dangerouslySetInnerHTML={{ __html: htmlText }} />
-        </div>
+        <Editor order={order} setMarkdown={setMarkdown} />
       </div>
       <button className={"single__button"} onClick={onFeedbackClick}>
         フィードバックを取得する
