@@ -135,8 +135,13 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
         <div className="single__textarea__block"></div>
         <textarea
           className="single__textarea"
-          placeholder={placeholder}
+          placeholder={`${placeholder} cmd+Enterでフィードバックを取得できます`}
           onChange={onChange}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && e.metaKey) {
+              onFeedbackClick();
+            }
+          }}
         ></textarea>
       </div>
       <div className="single__preview">
