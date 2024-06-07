@@ -6,14 +6,19 @@ import { useCreateBlockNote } from "@blocknote/react";
 import { useDispatch } from "react-redux";
 import { write } from "../../../../redux/store/modules/pdcaList";
 
-export default function Editor({ order = "PDCA", setMarkdown }) {
-  const initialData = [{}];
+export default function Editor({
+  order = "PDCA",
+  setMarkdown,
+  initialData = [{}],
+}) {
   const dispatch = useDispatch();
 
   const editor = useCreateBlockNote({
     initialContent: initialData,
     dictionary: locales.ja,
   });
+
+  console.log(initialData);
 
   const onChange = async () => {
     const markdown = await editor.blocksToMarkdownLossy(editor.document);
@@ -31,6 +36,8 @@ export default function Editor({ order = "PDCA", setMarkdown }) {
         break;
       case "Action":
         dispatch(write({ action: markdown }));
+        break;
+      case "Confirm":
         break;
       default:
         break;
