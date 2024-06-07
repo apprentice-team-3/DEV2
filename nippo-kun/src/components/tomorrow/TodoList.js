@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { marked } from "marked";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import sanitizeHtml from "sanitize-html";
 import { removeTodo, updateTodo } from "../../todoSlice";
 import "./index.css";
@@ -11,21 +11,32 @@ const TodoList = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [editContent, setEditContent] = useState("");
   const textareaRef = useRef(null);
+  const saveRef = useRef(null);
+
+  useEffect(() => {
+    if (editIndex !== null) {
+      setTimeout(() => {
+        saveRef.current.classList.add("active");
+      });
+    }
+  }, [editIndex]);
 
   const handleRemoveTextarea = (index) => {
     dispatch(removeTodo(index));
   };
 
-  const handleEditTodo  = (index) => {
+  const handleEditTodo = (index) => {
     setEditIndex(index);
     setEditContent(todos[index]);
   };
 
   const handleSaveTodo = (index) => {
-    dispatch(updateTodo({
-      index,
-      content: editContent
-    }));
+    dispatch(
+      updateTodo({
+        index,
+        content: editContent,
+      })
+    );
     setEditIndex(null);
   };
 
@@ -44,26 +55,26 @@ const TodoList = () => {
   };
 
   useEffect(() => {
-      const textarea  = textareaRef.current;
-      const handleKeyDown = (event) => {
-        if (event.key === 'Enter' && !event.isComposing) {
-          if (event.metaKey) {
-            event.preventDefault();
-            handleSaveTodo(editIndex);
-          }
+    const textarea = textareaRef.current;
+    const handleKeyDown = (event) => {
+      if (event.key === "Enter" && !event.isComposing) {
+        if (event.metaKey) {
+          event.preventDefault();
+          handleSaveTodo(editIndex);
         }
-      };
-
-      if (textarea) {
-        textarea.addEventListener('keydown', handleKeyDown);
       }
+    };
 
-      return () => {
-        if (textarea) {
-          textarea.removeEventListener("keydown", handleKeyDown);
-        }
-      };
-    }, [editIndex, editContent]);
+    if (textarea) {
+      textarea.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      if (textarea) {
+        textarea.removeEventListener("keydown", handleKeyDown);
+      }
+    };
+  }, [editIndex, editContent]);
 
   return (
     <div>
@@ -72,10 +83,10 @@ const TodoList = () => {
         {todos.map((todo, index) => (
           <li key={index} className="todo-item">
             <button
-            className="button remove"
-            onClick={() => handleRemoveTextarea(index)}
-          >
-            ー
+              className="button remove"
+              onClick={() => handleRemoveTextarea(index)}
+            >
+              ー
             </button>
             {editIndex === index ? (
               <div className="edit-container">
@@ -88,15 +99,16 @@ const TodoList = () => {
                 <button
                   className="button save"
                   onClick={() => handleSaveTodo(index)}
+                  ref={saveRef}
                 >
                   保存
                 </button>
               </div>
             ) : (
               <div
-              className="textarea-block"
-              onClick={() => handleEditTodo(index)}
-              dangerouslySetInnerHTML={{__html: getSanitizedMarkdown(todo) }}
+                className="textarea-block"
+                onClick={() => handleEditTodo(index)}
+                dangerouslySetInnerHTML={{ __html: getSanitizedMarkdown(todo) }}
               ></div>
             )}
           </li>
