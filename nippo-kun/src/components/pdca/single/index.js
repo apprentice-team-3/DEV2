@@ -21,8 +21,6 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
     (state) => state.pdcaLister && state.pdcaLister.pdcaList
   );
 
-  console.log(pdcaList);
-
   const markedText = sanitizeHtml(markdown, {
     allowedTags: [],
     disallowedTagsMode: "recursiveEscape",
