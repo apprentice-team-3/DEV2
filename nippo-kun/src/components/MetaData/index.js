@@ -1,9 +1,90 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addTodayTask, removeTodayTask, updateTodayTask } from '../../todaySlice';
+import Tabs from './tab/index';
 import './index.css';
 
 function MetaData() {
-    const todo = useSelector((state) => state.todo.todo);
+    const todayTasks = useSelector((state) => state.today.today);
+    const dispatch = useDispatch();
+
+    const [currentTab, setCurrentTab] = useState('');
+    const [tabs, setTabs] = useState([]);
+
+    useEffect(() => {
+        const storedTabs = localStorage.getItem('yesterday')
+            ? JSON.parse(localStorage.getItem('yesterday'))
+            : [];
+        setTabs(storedTabs);
+        if (storedTabs.length > 0) {
+            setCurrentTab(storedTabs[0]);
+        }
+    }, []);
+
+    const handleTabChange = (tabName) => {
+        setCurrentTab(tabName);
+    };
+
+    const handleUpdateTask = (index, content) => {
+        dispatch(updateTodayTask({ index, content }));
+        const updatedTabs = tabs.map((tab, i) => i === index ? content : tab);
+        setTabs(updatedTabs);
+    };
+
+    const handleAddTab = () => {
+        const newTab = prompt('新しいタスクを入力してください:');
+        if (newTab) {
+            setTabs([...tabs, newTab]);
+            setCurrentTab(newTab);
+        }
+    };
+
+    const handleRemoveTab = (tabName) => {
+        const updatedTabs = tabs.filter(tab => tab !== tabName);
+        setTabs(updatedTabs);
+        if (currentTab === tabName && updatedTabs.length > 0) {
+            setCurrentTab(updatedTabs[0]);
+        } else if (updatedTabs.length === 0) {
+            setCurrentTab('');
+        }
+    };
+
+    const handleEditTab = () => {
+        const newLabel = prompt('タスクを入力してください:', currentTab);
+        if (newLabel) {
+            handleUpdateTask(tabs.indexOf(currentTab), newLabel);
+        }
+        setCurrentTab(newLabel);
+    };
+
+    const handleDateChange = (month, day) => {
+        setCurrentDate(`${month}/${day}`);
+        setSelectedMonth(month);
+        setSelectedDay(day);
+        updateDayOfWeek(month, day);
+    };
+
+    const handleMonthChange = (e) => {
+        const newMonth = e.target.value;
+        handleDateChange(newMonth, selectedDay);
+    };
+
+    const handleDayChange = (e) => {
+        const newDay = e.target.value;
+        handleDateChange(selectedMonth, newDay);
+    };
+
+    const handleHourChange = (e) => {
+        const newHour = e.target.value;
+        setSelectedHour(newHour);
+        localStorage.setItem('defaultStudyHour', newHour);
+    };
+
+    const handleMindChange = (e) => {
+        const newMind = e.target.value;
+        setSelectedMind(newMind);
+        localStorage.setItem('defaultTodayMind', newMind);
+    };
 
     const [currentDate, setCurrentDate] = useState(() => {
         const today = new Date();
@@ -44,38 +125,9 @@ function MetaData() {
         setDayOfWeek(weekday);
     };
 
-    const handleDateChange = (month, day) => {
-        setCurrentDate(`${month}/${day}`);
-        setSelectedMonth(month);
-        setSelectedDay(day);
-        updateDayOfWeek(month, day);
-    };
-
-    const handleMonthChange = (e) => {
-        const newMonth = e.target.value;
-        handleDateChange(newMonth, selectedDay);
-    };
-
-    const handleDayChange = (e) => {
-        const newDay = e.target.value;
-        handleDateChange(selectedMonth, newDay);
-    };
-
-    const handleHourChange = (e) => {
-        const newHour = e.target.value;
-        setSelectedHour(newHour);
-        localStorage.setItem('defaultStudyHour', newHour);
-    };
-
-    const handleMindChange = (e) => {
-        const newMind = e.target.value;
-        setSelectedMind(newMind);
-        localStorage.setItem('defaultTodayMind', newMind);
-    };
-
     return (
         <>
-            <div className='MetaData'>
+            <div className="MetaData">
                 <div className='date'>
                     <div>日付:</div>
                     <select value={selectedMonth} onChange={handleMonthChange}>
@@ -102,13 +154,20 @@ function MetaData() {
                 <div className='mind'>
                     <div>今日の気持ち</div>
                     <select className='selectedMind' value={selectedMind} onChange={handleMindChange}>
-                        {['Very Good', 'Good', 'Neutral', 'Bad', 'Very Bad'].map((value) => (
+                        {['めちゃええ', 'ええ', 'まあまあ', 'わるい', 'めちゃわるい'].map((value) => (
                             <option key={value} value={value}>{value}</option>
                         ))}
                     </select>
                 </div>
             </div>
-            <div className='ToDo'>{todo}</div>
+            <Tabs
+                tabs={tabs}
+                currentTab={currentTab}
+                onTabChange={handleTabChange}
+                handleAddTab={handleAddTab}
+                handleRemoveTab={handleRemoveTab}
+                handleEditTab={handleEditTab}
+            />
         </>
     );
 }
