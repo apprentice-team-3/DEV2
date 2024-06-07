@@ -1,4 +1,4 @@
-.all-check-button__wrapper {
+.confirm-button__wrapper {
   display: flex;
   justify-content: end;
   align-items: center;
@@ -6,7 +6,7 @@
   padding: 0 40px;
 }
 
-.all-check-button {
+.confirm-button {
   display: block;
   background-color: #4caf50;
   color: white;
@@ -15,12 +15,12 @@
   cursor: pointer;
   border-radius: 8px;
   margin-bottom: 10px;
-  width: 350px;
+  width: 100px;
   transition: background-color 0.3s ease-in-out;
   position: relative;
 
   &:after {
-    content: "PDCA全体の観点からフィードバックを取得する";
+    content: "校閲する";
     position: absolute;
     white-space: nowrap;
     top: 50%;
