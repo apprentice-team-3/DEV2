@@ -21,13 +21,6 @@ const Help = () => {
         onChange={handleChange}
         placeholder="気になることを入力してください"
       ></textarea>
-
-      {/* テスト用 */}
-      <div>
-        <h3>（テスト用）Reduxに保存された内容：</h3>
-        <div dangerouslySetInnerHTML={{ __html: html}} />
-      </div>
-
     </div>
   );
 };

@@ -22,9 +22,6 @@ root.render(
           <Route path="/confirm" element={<Confirm />} />
         </Routes>
       </Router>
-      <AllCheckButton />
-      <Tomorrow />
-      <DigressionAndHelp />
     </Provider>,
   </React.StrictMode>
 );
