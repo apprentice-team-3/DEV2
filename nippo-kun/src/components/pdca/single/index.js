@@ -1,8 +1,10 @@
 import classnames from "classnames";
 import { marked } from "marked";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import sanitizeHtml from "sanitize-html";
 import Loading from "../../loading";
+import Editor from "./Editor";
 import "./index.css";
 
 export default function Single({ title, placeholder, order = "PDCA" }) {
@@ -13,6 +15,12 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
   const [addFeedbackText, setAddFeedbackText] = useState("");
 
   const [isTruncated, setIsTruncated] = useState(false);
+  const dispatch = useDispatch();
+
+  const pdcaList = useSelector(
+    (state) => state.pdcaLister && state.pdcaLister.pdcaList
+  );
+
   const markedText = sanitizeHtml(markdown, {
     allowedTags: [],
     disallowedTagsMode: "recursiveEscape",
@@ -102,20 +110,7 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
     <div>
       <h2 className="single__title">{title}</h2>
       <div className="single__textarea__wrapper">
-        <div className="single__textarea__block"></div>
-        <textarea
-          className="single__textarea"
-          placeholder={placeholder}
-          onChange={(e) => {
-            setMarkdown(e.target.value);
-          }}
-        ></textarea>
-      </div>
-      <div className="single__preview">
-        <p>プレビュー</p>
-        <div className="">
-          <div dangerouslySetInnerHTML={{ __html: htmlText }} />
-        </div>
+        <Editor order={order} setMarkdown={setMarkdown} />
       </div>
       <button className={"single__button"} onClick={onFeedbackClick}>
         フィードバックを取得する
