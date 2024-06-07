@@ -9,7 +9,7 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import store from "./store";
 import Tomorrow from "./components/tomorrow";
-import Digression from "./components/digression";
+import DigressionAndHelp from "./components/digression-and-help";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -24,7 +24,7 @@ root.render(
       </Router>
       <AllCheckButton />
       <Tomorrow />
-      <Digression />
+      <DigressionAndHelp />
     </Provider>,
   </React.StrictMode>
 );

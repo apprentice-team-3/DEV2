@@ -1,25 +1,25 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMarkdown, setHTML } from '../../store';
+import { setHelpMarkdown } from '../../../store';
 import './index.css';
 
-const Digression = () => {
+const Help = () => {
   const dispatch = useDispatch();
-  const markdown = useSelector((state) => state.digression.markdown);
-  const html = useSelector((state) => state.digression.html);
+  const markdown = useSelector((state) => state.help.markdown);
+  const html = useSelector((state) => state.help.html);
 
   const handleChange = (e) => {
-    dispatch(setMarkdown(e.target.value));
+    dispatch(setHelpMarkdown(e.target.value));
   };
 
   return (
-    <div className="digression__wrapper">
-      <h2 className="digression__title">余談</h2>
+    <div className="help__wrapper">
+      <h2 className="help__title">相談</h2>
       <textarea
-        className="digression__textarea"
+        className="help__textarea"
         value={markdown}
         onChange={handleChange}
-        placeholder="余談を入力してください"
+        placeholder="気になることを入力してください"
       ></textarea>
 
       {/* テスト用 */}
@@ -32,4 +32,4 @@ const Digression = () => {
   );
 };
 
-export default Digression;
+export default Help;
