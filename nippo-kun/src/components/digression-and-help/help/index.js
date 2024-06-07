@@ -14,7 +14,7 @@ const Help = () => {
 
   return (
     <div className="help__wrapper">
-      <h2 className="help__title">相談</h2>
+      {/* <h2 className="help__title">相談</h2> */}
       <textarea
         className="help__textarea"
         value={markdown}

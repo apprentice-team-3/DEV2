@@ -14,7 +14,7 @@ const Digression = () => {
 
   return (
     <div className="digression__wrapper">
-      <h2 className="digression__title">余談</h2>
+      {/* <h2 className="digression__title">余談</h2> */}
       <textarea
         className="digression__textarea"
         value={markdown}
