@@ -3,7 +3,9 @@ import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setReport } from "../../../../redux/store/modules/confirmReport";
 import { write } from "../../../../redux/store/modules/pdcaList";
 
 export default function Editor({
@@ -29,6 +31,14 @@ export default function Editor({
       initialData.shift();
     }
   }
+
+  useEffect(() => {
+    if (order === "confirm") {
+      editor.blocksToMarkdownLossy(editor.document).then((markdown) => {
+        dispatch(setReport(markdown));
+      });
+    }
+  }, [initialData]);
 
   const editor = useCreateBlockNote({
     initialContent: initialData,

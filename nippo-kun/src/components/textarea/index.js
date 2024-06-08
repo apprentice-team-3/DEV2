@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Editor from "../pdca/single/Editor";
 
 export default function Textarea() {
@@ -11,6 +11,7 @@ export default function Textarea() {
   const mind = useSelector((state) => state.metaDater.metaData.mind);
   const pdcaList = useSelector((state) => state.pdcaLister.pdcaList);
   const tomorrowTodo = useSelector((state) => state.todo.tomorrow);
+  const dispatch = useDispatch();
 
   const distContent = [];
 
@@ -148,6 +149,7 @@ export default function Textarea() {
       <Editor
         setMarkdown={setMarkdown}
         initialData={distContent.length ? distContent : [{}]}
+        order={"confirm"}
       />
     </div>
   );

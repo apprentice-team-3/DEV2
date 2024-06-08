@@ -1,4 +1,4 @@
-import CoppyButton from "../../buttons/copy-button";
+import CopyButton from "../../buttons/copy-button";
 import Header from "../../header";
 import Textarea from "../../textarea";
 const Confirm = () => {
@@ -6,7 +6,7 @@ const Confirm = () => {
     <>
       <Header />
       <Textarea />
-      <CoppyButton />
+      <CopyButton />
     </>
   );
 };

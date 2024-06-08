@@ -1,9 +1,19 @@
+import { useSelector } from "react-redux";
 import "./index.css";
 
 export default function Copy() {
-  const onClick = (e) => {
+  const confirmReport = useSelector(
+    (state) => state.confirmReporter.confirmReport
+  );
+  const onClick = async (e) => {
     e.preventDefault();
-    // dispatch(changeConfirm({}));
+
+    try {
+      await navigator.clipboard.writeText(confirmReport);
+      console.log("テキストがクリップボードにコピーされました");
+    } catch (err) {
+      console.error("テキストのコピーに失敗しました", err);
+    }
   };
 
   return (
