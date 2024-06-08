@@ -1,27 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
-import Header from './components/header/index.js';
+import { useSelector } from "react-redux";
+import Confirm from "./components/routes/confirm";
+import Home from "./components/routes/home";
 
-function App() {
+export default function App() {
+  const pageName = useSelector(
+    (state) => state.pager && state.pager.currentPageName
+  );
+
   return (
-    <div className="App">
-      <Header /> {/* Headerコンポーネントの使用 */}
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {pageName === "home" && <Home />}
+      {pageName === "confirm" && <Confirm />}
+    </>
   );
 }
-
-export default App;

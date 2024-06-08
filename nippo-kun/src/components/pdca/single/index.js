@@ -1,37 +1,22 @@
 import classnames from "classnames";
 import { marked } from "marked";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import sanitizeHtml from "sanitize-html";
 import Loading from "../../loading";
 import Editor from "./Editor";
 import "./index.css";
 
-export default function Single({ title, placeholder, order = "PDCA" }) {
+export default function Single({ title, order = "PDCA" }) {
   const [markdown, setMarkdown] = useState("");
   const [showFeedback, setShowFeedBack] = useState("");
   const [commonFeedbackText, setCommonFeedbackText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [addFeedbackText, setAddFeedbackText] = useState("");
-
   const [isTruncated, setIsTruncated] = useState(false);
-  const dispatch = useDispatch();
-
-  const pdcaList = useSelector(
-    (state) => state.pdcaLister && state.pdcaLister.pdcaList
-  );
-
-  const markedText = sanitizeHtml(markdown, {
-    allowedTags: [],
-    disallowedTagsMode: "recursiveEscape",
-  });
 
   marked.setOptions({
     gfm: true,
     breaks: true,
   });
-
-  const htmlText = marked.parse(markedText);
 
   const onFeedbackClick = async () => {
     setShowFeedBack(true);

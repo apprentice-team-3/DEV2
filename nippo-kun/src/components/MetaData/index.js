@@ -66,7 +66,6 @@ function MetaData() {
 
   const handleDateChange = (month, day) => {
     setCurrentDate(`${month}/${day}`);
-    dispatch(setDate(`${month}/${day}`));
     setSelectedMonth(month);
     setSelectedDay(day);
     updateDayOfWeek(month, day);
@@ -100,7 +99,8 @@ function MetaData() {
     const today = new Date();
     const month = today.getMonth() + 1;
     const day = today.getDate();
-    dispatch(setDate(`${month}/${day}`));
+    const weekday = today.toLocaleDateString("ja-JP", { weekday: "short" });
+    dispatch(setDate(`${month}/${day}(${weekday})`));
     return `${month}/${day}`;
   });
 
@@ -132,10 +132,12 @@ function MetaData() {
   });
 
   const updateDayOfWeek = (month, day) => {
+    //   Check 1月1日から前日に戻る時にバグらない？
     const year = new Date().getFullYear();
     const date = new Date(year, month - 1, day);
     const weekday = date.toLocaleDateString("ja-JP", { weekday: "short" });
     setDayOfWeek(weekday);
+    dispatch(setDate(`${month}/${day}(${weekday})`));
   };
 
   return (
