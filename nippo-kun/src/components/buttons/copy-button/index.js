@@ -1,4 +1,5 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { changeHome } from "../../../redux/store/modules/page";
 import "./index.css";
 
 export default function Copy() {
@@ -7,6 +8,7 @@ export default function Copy() {
   );
 
   const tomorrowTodo = useSelector((state) => state.todo.tomorrow);
+  const dispatch = useDispatch();
 
   const onClick = async (e) => {
     e.preventDefault();
@@ -20,8 +22,14 @@ export default function Copy() {
     }
   };
 
+  const onClickBack = (e) => {
+    e.preventDefault();
+    dispatch(changeHome());
+  };
+
   return (
     <div className="confirm-button__wrapper">
+      <button className="back-button" onClick={onClickBack}></button>
       <button className="copy-button" onClick={onClick}></button>
     </div>
   );
