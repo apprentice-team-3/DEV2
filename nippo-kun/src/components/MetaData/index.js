@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDate, setLearningTime } from "../../redux/store/modules/metaData";
+import {
+  setDate,
+  setLearningTime,
+  setMind,
+} from "../../redux/store/modules/metaData";
 import { updateTodayTask } from "../../todaySlice";
 import "./index.css";
 import Tabs from "./tab/index";
@@ -11,6 +15,8 @@ function MetaData() {
 
   const [currentTab, setCurrentTab] = useState("");
   const [tabs, setTabs] = useState([]);
+
+  const mind = useSelector((state) => state.metaDater.metaData.mind);
 
   useEffect(() => {
     const storedTabs = localStorage.getItem("yesterday")
@@ -86,6 +92,7 @@ function MetaData() {
   const handleMindChange = (e) => {
     const newMind = e.target.value;
     setSelectedMind(newMind);
+    dispatch(setMind(newMind));
     localStorage.setItem("defaultTodayMind", newMind);
   };
 
@@ -109,12 +116,13 @@ function MetaData() {
 
   const [selectedHour, setSelectedHour] = useState(() => {
     const savedHour = localStorage.getItem("defaultStudyHour");
-    dispatch(setLearningTime(savedHour));
+    dispatch(setLearningTime(savedHour || 10));
     return savedHour !== null ? Number(savedHour) : 10;
   });
 
   const [selectedMind, setSelectedMind] = useState(() => {
     const savedMind = localStorage.getItem("defaultTodayMind");
+    dispatch(setMind(savedMind ? String(savedMind) : "Good"));
     return savedMind !== null ? String(savedMind) : "Good";
   });
 
