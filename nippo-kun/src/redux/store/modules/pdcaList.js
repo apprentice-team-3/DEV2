@@ -62,10 +62,19 @@ const pdcaLister = createSlice({
         return { ...item, isOpen: false };
       });
     },
+    editDoneName(state, { type, payload }) {
+      const { prevDoneName, newDoneName } = payload;
+      state.pdcaList = state.pdcaList.map((item) => {
+        if (item.doneName === prevDoneName) {
+          return { ...item, doneName: newDoneName };
+        }
+        return item;
+      });
+    },
   },
 });
 
-const { add, remove, write, change } = pdcaLister.actions;
+const { add, remove, write, change, editDoneName } = pdcaLister.actions;
 
-export { add, change, remove, write };
+export { add, change, editDoneName, remove, write };
 export default pdcaLister.reducer;

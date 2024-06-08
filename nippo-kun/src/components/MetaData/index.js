@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { changeDoneName } from "../../redux/store/modules/doneName";
+import { editDoneName } from "../../redux/store/modules/pdcaList";
 import { updateTodayTask } from "../../todaySlice";
 import "./index.css";
 import Tabs from "./tab/index";
@@ -43,10 +45,14 @@ function MetaData() {
 
   const handleEditTab = () => {
     const newLabel = prompt("タスクを入力してください:", currentTab);
-    if (newLabel) {
+    if (newLabel && !tabs.includes(newLabel)) {
       handleUpdateTask(tabs.indexOf(currentTab), newLabel);
+      dispatch(
+        editDoneName({ prevDoneName: currentTab, newDoneName: newLabel })
+      );
+      dispatch(changeDoneName({ doneName: newLabel }));
+      setCurrentTab(newLabel);
     }
-    setCurrentTab(newLabel);
   };
 
   const handleDateChange = (month, day) => {
