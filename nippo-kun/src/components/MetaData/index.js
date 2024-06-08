@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { changeDoneName } from "../../redux/store/modules/doneName";
 import {
   setDate,
   setLearningTime,
   setMind,
 } from "../../redux/store/modules/metaData";
+import {
+  change,
+  editDoneName,
+  remove,
+} from "../../redux/store/modules/pdcaList";
 import { updateTodayTask } from "../../todaySlice";
 import "./index.css";
 import Tabs from "./tab/index";
 
 function MetaData() {
-  const todayTasks = useSelector((state) => state.today.today);
   const dispatch = useDispatch();
 
   const [currentTab, setCurrentTab] = useState("");
   const [tabs, setTabs] = useState([]);
-
-  const mind = useSelector((state) => state.metaDater.metaData.mind);
 
   useEffect(() => {
     const storedTabs = localStorage.getItem("yesterday")
@@ -28,40 +31,34 @@ function MetaData() {
     }
   }, []);
 
-  const handleTabChange = (tabName) => {
-    setCurrentTab(tabName);
-  };
-
   const handleUpdateTask = (index, content) => {
     dispatch(updateTodayTask({ index, content }));
     const updatedTabs = tabs.map((tab, i) => (i === index ? content : tab));
     setTabs(updatedTabs);
   };
 
-  const handleAddTab = () => {
-    const newTab = prompt("新しいタスクを入力してください:");
-    if (newTab) {
-      setTabs([...tabs, newTab]);
-      setCurrentTab(newTab);
-    }
-  };
-
   const handleRemoveTab = (tabName) => {
+    if (tabs.length === 1) return;
     const updatedTabs = tabs.filter((tab) => tab !== tabName);
     setTabs(updatedTabs);
-    if (currentTab === tabName && updatedTabs.length > 0) {
-      setCurrentTab(updatedTabs[0]);
-    } else if (updatedTabs.length === 0) {
-      setCurrentTab("");
-    }
+    setCurrentTab(updatedTabs[0]);
+    setCurrentTab(updatedTabs[0]);
+    dispatch(changeDoneName({ doneName: updatedTabs[0] }));
+    dispatch(change({ doneName: updatedTabs[0] }));
+    dispatch(remove({ doneName: tabName }));
   };
 
   const handleEditTab = () => {
     const newLabel = prompt("タスクを入力してください:", currentTab);
-    if (newLabel) {
+
+    if (newLabel && !tabs.includes(newLabel)) {
       handleUpdateTask(tabs.indexOf(currentTab), newLabel);
+      dispatch(
+        editDoneName({ prevDoneName: currentTab, newDoneName: newLabel })
+      );
+      dispatch(changeDoneName({ doneName: newLabel }));
+      setCurrentTab(newLabel);
     }
-    setCurrentTab(newLabel);
   };
 
   const handleDateChange = (month, day) => {
@@ -140,6 +137,20 @@ function MetaData() {
     dispatch(setDate(`${month}/${day}(${weekday})`));
   };
 
+  useEffect(() => {
+    const storedTabs = localStorage.getItem("yesterday")
+      ? JSON.parse(localStorage.getItem("yesterday"))
+      : [];
+    setTabs(storedTabs);
+    if (storedTabs.length > 0) {
+      setCurrentTab(storedTabs[0]);
+    }
+  }, []);
+
+  const handleTabChange = (tabName) => {
+    setCurrentTab((prev) => tabName);
+  };
+
   return (
     <>
       <div className="MetaData">
@@ -194,8 +205,9 @@ function MetaData() {
       <Tabs
         tabs={tabs}
         currentTab={currentTab}
+        setCurrentTab={setCurrentTab}
+        setTabs={setTabs}
         onTabChange={handleTabChange}
-        handleAddTab={handleAddTab}
         handleRemoveTab={handleRemoveTab}
         handleEditTab={handleEditTab}
       />

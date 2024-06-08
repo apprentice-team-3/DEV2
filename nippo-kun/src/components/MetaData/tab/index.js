@@ -7,25 +7,28 @@ import "./index.css";
 const Tabs = ({
   tabs,
   currentTab,
+  setTabs,
   onTabChange,
-  handleAddTab,
   handleRemoveTab,
   handleEditTab,
 }) => {
   const [activeTab, setActiveTab] = useState(currentTab);
   const dispatch = useDispatch();
+  const [isReadTags, setIsReadTags] = useState(false);
 
   useEffect(() => {
     setActiveTab(currentTab);
   }, [currentTab]);
 
   useEffect(() => {
+    if (isReadTags) return;
     if (tabs.length > 0) {
       for (let i = 0; i < tabs.length; i++) {
         dispatch(add({ doneName: tabs[i] }));
       }
-      dispatch(change({ doneName: tabs[0] }));
       dispatch(changeDoneName({ doneName: tabs[0] }));
+      dispatch(change({ doneName: tabs[0] }));
+      setIsReadTags(true);
     }
   }, [tabs]);
 
@@ -34,6 +37,21 @@ const Tabs = ({
     onTabChange(tabName);
     dispatch(change({ doneName: tabName }));
     dispatch(changeDoneName({ doneName: tabName }));
+  };
+
+  const handleAddTab = () => {
+    const newTab = prompt("新しいタスクを入力してください:");
+
+    if (newTab && !tabs.includes(newTab)) {
+      setTabs((prev) => [...prev, newTab]);
+      setActiveTab((prev) => newTab);
+      onTabChange(newTab);
+      dispatch(add({ doneName: newTab, isOpen: true }));
+      dispatch(changeDoneName({ doneName: newTab }));
+      dispatch(change({ doneName: newTab }));
+    } else {
+      alert("同じタスク名は登録できません。");
+    }
   };
 
   return (

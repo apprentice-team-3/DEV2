@@ -15,6 +15,7 @@ export default function Editor({
 }) {
   const dispatch = useDispatch();
   const doneName = useSelector((state) => state.doneNamer.doneName);
+
   const pdca = useSelector(
     (state) =>
       state.pdcaLister.pdcaList.filter((item) => item.doneName === doneName)[0]
@@ -49,10 +50,16 @@ export default function Editor({
     const markdown = await editor.blocksToMarkdownLossy(editor.document);
     setMarkdown(markdown);
 
+    console.log(doneName);
+
     switch (order) {
       case "Plan":
         dispatch(
-          write({ plan: markdown, planBlock: editor.document, doneName })
+          write({
+            plan: markdown,
+            planBlock: editor.document,
+            doneName,
+          })
         );
         break;
       case "Do":
