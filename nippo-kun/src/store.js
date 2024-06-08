@@ -6,6 +6,7 @@ import {
   setHelpHTML,
   setHelpMarkdown,
 } from "./createMarkdownSlice";
+import doneName from "./redux/store/modules/doneName";
 import metaData from "./redux/store/modules/metaData";
 import pdcaListReducer from "./redux/store/modules/pdcaList";
 import todayReducer from "./todaySlice";
@@ -16,6 +17,7 @@ const store = configureStore({
     todo: todoReducer,
     pdcaLister: pdcaListReducer,
     today: todayReducer,
+    doneNamer: doneName,
     metaDater: metaData,
     ...rootReducer,
   },

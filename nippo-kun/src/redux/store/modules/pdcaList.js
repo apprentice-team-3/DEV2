@@ -3,15 +3,30 @@ import { createSlice } from "@reduxjs/toolkit";
 const pdcaLister = createSlice({
   name: "pdcaLister",
   initialState: {
-    pdcaList: [{ isOpen: true, plan: "", do: "", check: "", action: "" }],
+    pdcaList: [],
   },
   reducers: {
     add(state, { type, payload }) {
+      const { doneName } = payload;
+      if (state.pdcaList.some((item) => item.doneName === doneName)) return;
+
       state.pdcaList = state.pdcaList.map((item) => ({
         ...item,
         isOpen: false,
       }));
-      state.pdcaList = [...state.pdcaList, { ...payload, isOpen: true }];
+
+      state.pdcaList = [
+        ...state.pdcaList,
+        {
+          ...payload,
+          isOpen: true,
+          plan: "",
+          do: "",
+          check: "",
+          action: "",
+          isTruncated: false,
+        },
+      ];
     },
     remove(state, { type, payload }) {
       if (state.pdcaList.length === 1) return;
@@ -23,10 +38,22 @@ const pdcaLister = createSlice({
           return item;
         });
     },
+
     write(state, { type, payload }) {
       state.pdcaList = state.pdcaList.map((item) => {
-        if (item.id === payload.id) {
+        if (item.doneName === payload.doneName) {
           return { ...item, ...payload, isOpen: true };
+        }
+        return { ...item, isOpen: false };
+      });
+      console.log(state.pdcaList);
+    },
+
+    change(state, { type, payload }) {
+      const { doneName } = payload;
+      state.pdcaList = state.pdcaList.map((item) => {
+        if (item.doneName === doneName) {
+          return { ...item, isOpen: true };
         }
         return { ...item, isOpen: false };
       });
@@ -34,7 +61,7 @@ const pdcaLister = createSlice({
   },
 });
 
-const { add, remove, write } = pdcaLister.actions;
+const { add, remove, write, change } = pdcaLister.actions;
 
-export { add, remove, write };
+export { add, change, remove, write };
 export default pdcaLister.reducer;
