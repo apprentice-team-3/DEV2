@@ -9,7 +9,7 @@ export default function Single({ title, value, order = "PDCA" }) {
   const [markdown, setMarkdown] = useState("");
   const [showFeedback, setShowFeedBack] = useState("");
   const [commonFeedbackText, setCommonFeedbackText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useSfatate(false);
   const [addFeedbackText, setAddFeedbackText] = useState("");
 
   const [isTruncated, setIsTruncated] = useState(false);
@@ -23,15 +23,8 @@ export default function Single({ title, value, order = "PDCA" }) {
 
   if (value) {
     for (let i = 0; i < value.length; i++) {
-      initialData.push({
-        type: "heading",
-        props: {
-          level: 2,
-        },
-        content: "Plan",
-      });
+      initialData.push(value[i]);
     }
-    console.log(initialData);
   }
 
   const onFeedbackClick = async () => {

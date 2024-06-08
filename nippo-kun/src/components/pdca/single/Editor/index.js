@@ -3,15 +3,14 @@ import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
-import { useDispatch } from "react-redux";
-import { write } from "../../../../redux/store/modules/pdcaList";
+import useStore from "../../../../zustand/store";
 
 export default function Editor({
   order = "PDCA",
   setMarkdown,
   initialData = [{}],
 }) {
-  const dispatch = useDispatch();
+  const write = useStore((state) => state.write);
 
   const editor = useCreateBlockNote({
     initialContent: initialData,
@@ -24,16 +23,16 @@ export default function Editor({
 
     switch (order) {
       case "Plan":
-        dispatch(write({ plan: markdown, planBlock: editor.document }));
+        write({ plan: markdown, planBlock: editor.document });
         break;
       case "Do":
-        dispatch(write({ do: markdown, doBlock: editor.document }));
+        write({ do: markdown, doBlock: editor.document });
         break;
       case "Check":
-        dispatch(write({ check: markdown, checkBlock: editor.document }));
+        write({ check: markdown, checkBlock: editor.document });
         break;
       case "Action":
-        dispatch(write({ action: markdown, actionBlock: editor.document }));
+        write({ action: markdown, actionBlock: editor.document });
         break;
       default:
         break;

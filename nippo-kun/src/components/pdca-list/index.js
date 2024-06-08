@@ -1,16 +1,10 @@
-import { useSelector } from "react-redux";
-import PDCA from "../pdca";
-
-export default function PDCAList() {
-  const pdcaList = useSelector(
-    (state) => state.pdcaLister && state.pdcaLister.pdcaList
-  );
-
+export default function PDCAList({ pdcaList }) {
   return (
     <>
-      {pdcaList.map((item, index) => (
-        <PDCA item={item} key={index} />
-      ))}
+      {pdcaList &&
+        pdcaList.map((item) => {
+          <div key={item.doneName}>おっす</div>;
+        })}
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const useStore = create((set) => ({
+const useStore = create((set, get) => ({
   pdcaList: [],
   add: (newItem) =>
     set((state) => {
@@ -13,20 +13,24 @@ const useStore = create((set) => ({
         isOpen: false,
       }));
 
-      return {
-        pdcaList: [
-          ...state.pdcaList,
-          {
-            doneName,
-            isOpen: true,
-            plan: "",
-            do: "",
-            check: "",
-            action: "",
-            isTruncated: true,
-          },
-        ],
-      };
+      state.pdcaList = [
+        ...state.pdcaList,
+        {
+          ...newItem,
+          isOpen: true,
+          plan: "",
+          do: "",
+          check: "",
+          action: "",
+          isTruncated: true,
+          planBlock: [{}],
+          doBlock: [{}],
+          checkBlock: [{}],
+          actionBlock: [{}],
+        },
+      ];
+
+      return state;
     }),
   change: (newItem) =>
     set((state) => {
@@ -36,10 +40,20 @@ const useStore = create((set) => ({
         isOpen: item.doneName === doneName,
       }));
 
-      console.log(state.pdcaList);
+      return state;
+    }),
+  write: (newItem) =>
+    set((state) => {
+      state.pdcaList = state.pdcaList.map((item) => {
+        if (item.isOpen) {
+          return { ...item, ...newItem, isOpen: true };
+        }
+        return { ...item, isOpen: false };
+      });
       return state;
     }),
   updateBears: (newBears) => set({ bears: newBears }),
+  show: () => get((state) => state.pdcaList),
 }));
 
 export default useStore;
