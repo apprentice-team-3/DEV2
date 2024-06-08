@@ -8,6 +8,7 @@ const pdcaLister = createSlice({
   reducers: {
     add(state, { type, payload }) {
       const { doneName } = payload;
+
       if (state.pdcaList.some((item) => item.doneName === doneName)) return;
 
       state.pdcaList = state.pdcaList.map((item) => ({
@@ -18,13 +19,17 @@ const pdcaLister = createSlice({
       state.pdcaList = [
         ...state.pdcaList,
         {
-          ...payload,
+          doneName,
           isOpen: true,
           plan: "",
           do: "",
           check: "",
           action: "",
           isTruncated: false,
+          planBlock: [],
+          doBlock: [],
+          checkBlock: [],
+          actionBlock: [],
         },
       ];
     },
@@ -46,7 +51,6 @@ const pdcaLister = createSlice({
         }
         return { ...item, isOpen: false };
       });
-      console.log(state.pdcaList);
     },
 
     change(state, { type, payload }) {
