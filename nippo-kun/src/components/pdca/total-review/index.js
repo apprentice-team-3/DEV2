@@ -9,6 +9,7 @@ export default function TotalReview() {
     (state) => state.pdcaLister && state.pdcaLister.pdcaList
   ).filter((item) => item.isOpen)[0];
   const dispatch = useDispatch();
+  const doneName = useSelector((state) => state.doneNamer.doneName);
 
   const singleFeedbackClassNames = {
     single__feedback__body: true,
@@ -22,13 +23,11 @@ export default function TotalReview() {
 
   const onClick = (e) => {
     e.preventDefault();
-
     if (pdca.isTruncated) {
-      dispatch(write({ isTruncated: false }));
+      dispatch(write({ isTruncated: false, doneName: doneName }));
       const $dom = document.querySelector(".total-review__wrapper");
-      $dom.scrollIntoView({ behavior: "smooth" });
     } else {
-      dispatch(write({ isTruncated: true }));
+      dispatch(write({ isTruncated: true, doneName: doneName }));
     }
   };
 

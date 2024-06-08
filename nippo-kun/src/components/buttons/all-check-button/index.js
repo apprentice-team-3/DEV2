@@ -10,6 +10,8 @@ const AllCheckButton = () => {
     (state) => state.pdcaLister && state.pdcaLister.pdcaList
   );
 
+  const doneName = useSelector((state) => state.doneNamer.doneName);
+
   const onClick = async () => {
     const pdca = pdcaList.filter((item) => item.isOpen)[0];
 
@@ -23,9 +25,9 @@ const AllCheckButton = () => {
     # Action
     ${pdca.action}
     `;
-
-    dispatch(write({ isLoading: true }));
-
+    dispatch(
+      write({ isLoading: true, isTruncated: false, doneName: doneName })
+    );
     try {
       const response = await fetch(
         "https://express-hello-world-a3nc.onrender.com/",
@@ -57,27 +59,34 @@ const AllCheckButton = () => {
                 addFeedbackText,
                 isLoading: false,
                 isTruncated: true,
+                doneName: doneName,
               })
             );
           } else {
             const commonFeedbackText = marked.parse(generatedText);
 
-            dispatch({
-              commonFeedbackText,
-              addFeedbackText: "",
-              isLoading: false,
-              isTruncated: false,
-            });
+            dispatch(
+              write({
+                commonFeedbackText,
+                addFeedbackText: "",
+                isLoading: false,
+                isTruncated: false,
+                doneName: doneName,
+              })
+            );
           }
         });
       }
     } catch (e) {
-      dispatch({
-        commonFeedbackText: "エラーが発生しました。もう一度お試しください。",
-        addFeedbackText: "",
-        isLoading: false,
-        isTruncated: false,
-      });
+      dispatch(
+        write({
+          commonFeedbackText: "エラーが発生しました。もう一度お試しください。",
+          addFeedbackText: "",
+          isLoading: false,
+          isTruncated: false,
+          doneName: doneName,
+        })
+      );
     }
   };
 
