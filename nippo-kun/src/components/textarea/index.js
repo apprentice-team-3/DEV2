@@ -12,6 +12,9 @@ export default function Textarea() {
   const pdcaList = useSelector((state) => state.pdcaLister.pdcaList);
   const tomorrowTodo = useSelector((state) => state.todo.tomorrow);
 
+  const digression = useSelector((state) => state.digression.markdown);
+  const help = useSelector((state) => state.help.markdown);
+
   const distContent = [];
 
   distContent.push(
@@ -61,13 +64,6 @@ export default function Textarea() {
     ) {
       continue;
     }
-
-    console.log(
-      pdca.planBlock,
-      pdca.doBlock,
-      pdca.checkBlock,
-      pdca.actionBlock
-    );
 
     distContent.push({
       type: "heading",
@@ -149,6 +145,36 @@ export default function Textarea() {
         content: todo,
       });
     }
+  }
+
+  if (digression) {
+    distContent.push({
+      type: "heading",
+      props: {
+        level: 2,
+      },
+      content: "余談",
+    });
+
+    distContent.push({
+      type: "paragraph",
+      content: digression,
+    });
+  }
+
+  if (help) {
+    distContent.push({
+      type: "heading",
+      props: {
+        level: 2,
+      },
+      content: "相談",
+    });
+
+    distContent.push({
+      type: "paragraph",
+      content: help,
+    });
   }
 
   return (
