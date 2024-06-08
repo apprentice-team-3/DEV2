@@ -16,8 +16,6 @@ export default function Editor({ order = "PDCA", setMarkdown }) {
       state.pdcaLister.pdcaList.filter((item) => item.doneName === doneName)[0]
   );
 
-  initialData.concat(pdca[order.toLowerCase() + "Block"]);
-
   for (
     let i = 0;
     pdca[order.toLowerCase() + "Block"] &&
@@ -25,6 +23,9 @@ export default function Editor({ order = "PDCA", setMarkdown }) {
     i++
   ) {
     initialData.push(pdca[order.toLowerCase() + "Block"][i]);
+    if (i === 0) {
+      initialData.shift();
+    }
   }
 
   const editor = useCreateBlockNote({
