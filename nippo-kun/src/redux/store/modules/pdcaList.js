@@ -36,12 +36,12 @@ const pdcaLister = createSlice({
     remove(state, { type, payload }) {
       if (state.pdcaList.length === 1) return;
 
-      state.pdcaList = state.pdcaList
-        .filter((item, index) => index !== payload)
-        .map((item, index) => {
-          if (index === payload - 1) return { ...item, isOpen: true };
-          return item;
-        });
+      const { doneName } = payload;
+      state.pdcaList = state.pdcaList.filter(
+        (item) => item.doneName !== doneName
+      );
+
+      console.log(state.pdcaList);
     },
 
     write(state, { type, payload }) {

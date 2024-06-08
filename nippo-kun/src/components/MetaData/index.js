@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeDoneName } from "../../redux/store/modules/doneName";
-import { editDoneName } from "../../redux/store/modules/pdcaList";
+import {
+  change,
+  editDoneName,
+  remove,
+} from "../../redux/store/modules/pdcaList";
 import { updateTodayTask } from "../../todaySlice";
 import "./index.css";
 import Tabs from "./tab/index";
@@ -34,13 +38,13 @@ function MetaData() {
   };
 
   const handleRemoveTab = (tabName) => {
+    if (tabs.length === 1) return;
     const updatedTabs = tabs.filter((tab) => tab !== tabName);
     setTabs(updatedTabs);
-    if (currentTab === tabName && updatedTabs.length > 0) {
-      setCurrentTab(updatedTabs[0]);
-    } else if (updatedTabs.length === 0) {
-      setCurrentTab("");
-    }
+    setCurrentTab(updatedTabs[0]);
+    dispatch(changeDoneName({ doneName: updatedTabs[0] }));
+    dispatch(change({ doneName: updatedTabs[0] }));
+    dispatch(remove({ doneName: tabName }));
   };
 
   const handleEditTab = () => {
