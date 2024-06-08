@@ -39,33 +39,6 @@ export default function Editor({
       editor.blocksToMarkdownLossy(editor.document).then((markdown) => {
         dispatch(setReport(markdown));
         dispatch(startLoading());
-
-        // try {
-        //   fetch("https://express-hello-world-a3nc.onrender.com/", {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //       value: markdown,
-        //       order: "Action",
-        //     }),
-        //   }).then((response) => {
-        //     if (response.ok) {
-        //       response.json().then((data) => {
-        //         const { generatedText } = data;
-        //         dispatch(reviewWrite(generatedText));
-        //         dispatch(endLoading());
-        //         console.log(generatedText);
-        //       });
-        //     }
-        //   });
-        // } catch (err) {
-        //   console.error("AIのレビューに失敗しました", err);
-        // }
-        // setTimeout(() => {
-        //   dispatch(endLoading());
-        // }, 3000);
       });
     }
   }, [initialData]);
@@ -104,6 +77,9 @@ export default function Editor({
         dispatch(
           write({ action: markdown, actionBlock: editor.document, doneName })
         );
+        break;
+      case "confirm":
+        dispatch(setReport(markdown));
         break;
       default:
         break;
