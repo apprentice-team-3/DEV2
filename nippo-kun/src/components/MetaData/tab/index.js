@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { changeDoneName } from "../../../redux/store/modules/doneName";
 import { add, change } from "../../../redux/store/modules/pdcaList";
 import "./index.css";
 
@@ -24,6 +25,7 @@ const Tabs = ({
         dispatch(add({ doneName: tabs[i] }));
       }
       dispatch(change({ doneName: tabs[0] }));
+      dispatch(changeDoneName({ doneName: tabs[0] }));
     }
   }, [tabs]);
 
@@ -31,6 +33,7 @@ const Tabs = ({
     setActiveTab(tabName);
     onTabChange(tabName);
     dispatch(change({ doneName: tabName }));
+    dispatch(changeDoneName({ doneName: tabName }));
   };
 
   return (

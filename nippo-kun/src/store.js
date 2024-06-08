@@ -1,13 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
+import doneName from "./redux/store/modules/doneName";
 import pdcaListReducer from "./redux/store/modules/pdcaList";
+import todayReducer from "./todaySlice";
 import todoReducer from "./todoSlice";
-import todayReducer from './todaySlice';
 
 const store = configureStore({
   reducer: {
     todo: todoReducer,
     pdcaLister: pdcaListReducer,
     today: todayReducer,
+    doneNamer: doneName,
   },
 });
 

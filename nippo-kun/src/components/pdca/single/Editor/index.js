@@ -3,12 +3,29 @@ import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { write } from "../../../../redux/store/modules/pdcaList";
 
 export default function Editor({ order = "PDCA", setMarkdown }) {
   const initialData = [{}];
+
   const dispatch = useDispatch();
+  const doneName = useSelector((state) => state.doneNamer.doneName);
+  const pdca = useSelector(
+    (state) =>
+      state.pdcaLister.pdcaList.filter((item) => item.doneName === doneName)[0]
+  );
+
+  initialData.concat(pdca[order.toLowerCase() + "Block"]);
+
+  for (
+    let i = 0;
+    pdca[order.toLowerCase() + "Block"] &&
+    i < pdca[order.toLowerCase() + "Block"].length;
+    i++
+  ) {
+    initialData.push(pdca[order.toLowerCase() + "Block"][i]);
+  }
 
   const editor = useCreateBlockNote({
     initialContent: initialData,
@@ -21,16 +38,23 @@ export default function Editor({ order = "PDCA", setMarkdown }) {
 
     switch (order) {
       case "Plan":
-        dispatch(write({ plan: markdown }));
+        dispatch(
+          write({ plan: markdown, planBlock: editor.document, doneName })
+        );
         break;
       case "Do":
-        dispatch(write({ do: markdown }));
+        dispatch(write({ do: markdown, doBlock: editor.document, doneName }));
+
         break;
       case "Check":
-        dispatch(write({ check: markdown }));
+        dispatch(
+          write({ check: markdown, checkBlock: editor.document, doneName })
+        );
         break;
       case "Action":
-        dispatch(write({ action: markdown }));
+        dispatch(
+          write({ action: markdown, actionBlock: editor.document, doneName })
+        );
         break;
       default:
         break;
