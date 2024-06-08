@@ -13,64 +13,110 @@ export default function Textarea() {
 
   const distContent = [];
 
-  distContent.push({
-    tye: "paragraph",
-    content: `${date}\n学習時間:${learningTime}時間    今日の気持ち: ${mind}`,
-  });
+  distContent.push(
+    {
+      type: "heading",
+      props: {
+        level: 2,
+      },
+      content: `${date}`,
+    },
+    {
+      type: "paragraph",
+      props: {
+        level: 1,
+      },
+      content: `学習時間:${learningTime}時間    今日の気持ち: ${mind}`,
+    }
+  );
 
-  if (pdcaList[0].planBlock) {
+  console.log(pdcaList);
+
+  if (pdcaList.length > 0) {
     distContent.push({
       type: "heading",
       props: {
         level: 2,
       },
-      content: "Plan",
+      content: "Done List",
     });
-
-    for (let i = 0; i < pdcaList[0].planBlock.length; i++) {
-      distContent.push(pdcaList[0].planBlock[i]);
+    for (const pdca of pdcaList) {
+      if (!pdca.doneName) {
+        continue;
+      }
+      distContent.push({
+        type: "bulletListItem",
+        content: pdca.doneName,
+      });
     }
   }
 
-  if (pdcaList[0].doBlock) {
-    distContent.push({
-      type: "heading",
-      props: {
-        level: 2,
-      },
-      content: "Do",
-    });
-
-    for (let i = 0; i < pdcaList[0].doBlock.length; i++) {
-      distContent.push(pdcaList[0].doBlock[i]);
+  for (const pdca of pdcaList) {
+    if (!pdca.doneName) {
+      continue;
     }
-  }
-
-  if (pdcaList[0].checkBlock) {
     distContent.push({
       type: "heading",
       props: {
         level: 2,
       },
-      content: "Check",
+      content: pdca.doneName,
     });
 
-    for (let i = 0; i < pdcaList[0].checkBlock.length; i++) {
-      distContent.push(pdcaList[0].checkBlock[i]);
+    if (pdca.planBlock) {
+      distContent.push({
+        type: "heading",
+        props: {
+          level: 3,
+        },
+        content: "Plan",
+      });
+
+      for (let i = 0; i < pdca.planBlock.length; i++) {
+        distContent.push(pdca.planBlock[i]);
+      }
     }
-  }
 
-  if (pdcaList[0].actionBlock) {
-    distContent.push({
-      type: "heading",
-      props: {
-        level: 2,
-      },
-      content: "Action",
-    });
+    if (pdca.doBlock) {
+      distContent.push({
+        type: "heading",
+        props: {
+          level: 3,
+        },
+        content: "Do",
+      });
 
-    for (let i = 0; i < pdcaList[0].actionBlock.length; i++) {
-      distContent.push(pdcaList[0].actionBlock[i]);
+      for (let i = 0; i < pdca.doBlock.length; i++) {
+        distContent.push(pdca.doBlock[i]);
+      }
+    }
+
+    if (pdca.checkBlock) {
+      distContent.push({
+        type: "heading",
+        props: {
+          level: 3,
+        },
+        content: "Check",
+      });
+
+      for (let i = 0; i < pdca.checkBlock.length; i++) {
+        distContent.push(pdca.checkBlock[i]);
+      }
+    }
+
+    if (pdca.actionBlock) {
+      distContent.push({
+        type: "heading",
+        props: {
+          level: 3,
+        },
+        content: "Action",
+      });
+
+      for (let i = 0; i < pdca.actionBlock.length; i++) {
+        distContent.push(pdca.actionBlock[i]);
+      }
     }
   }
 
