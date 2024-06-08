@@ -8,6 +8,7 @@ const pdcaLister = createSlice({
   reducers: {
     add(state, { type, payload }) {
       const { doneName } = payload;
+
       if (state.pdcaList.some((item) => item.doneName === doneName)) return;
 
       state.pdcaList = state.pdcaList.map((item) => ({
@@ -18,25 +19,29 @@ const pdcaLister = createSlice({
       state.pdcaList = [
         ...state.pdcaList,
         {
-          ...payload,
+          doneName,
           isOpen: true,
           plan: "",
           do: "",
           check: "",
           action: "",
           isTruncated: false,
+          planBlock: [],
+          doBlock: [],
+          checkBlock: [],
+          actionBlock: [],
         },
       ];
     },
     remove(state, { type, payload }) {
       if (state.pdcaList.length === 1) return;
 
-      state.pdcaList = state.pdcaList
-        .filter((item, index) => index !== payload)
-        .map((item, index) => {
-          if (index === payload - 1) return { ...item, isOpen: true };
-          return item;
-        });
+      const { doneName } = payload;
+      state.pdcaList = state.pdcaList.filter(
+        (item) => item.doneName !== doneName
+      );
+
+      console.log(state.pdcaList);
     },
 
     write(state, { type, payload }) {
@@ -46,7 +51,6 @@ const pdcaLister = createSlice({
         }
         return { ...item, isOpen: false };
       });
-      console.log(state.pdcaList);
     },
 
     change(state, { type, payload }) {
@@ -58,10 +62,19 @@ const pdcaLister = createSlice({
         return { ...item, isOpen: false };
       });
     },
+    editDoneName(state, { type, payload }) {
+      const { prevDoneName, newDoneName } = payload;
+      state.pdcaList = state.pdcaList.map((item) => {
+        if (item.doneName === prevDoneName) {
+          return { ...item, doneName: newDoneName };
+        }
+        return item;
+      });
+    },
   },
 });
 
-const { add, remove, write, change } = pdcaLister.actions;
+const { add, remove, write, change, editDoneName } = pdcaLister.actions;
 
-export { add, change, remove, write };
+export { add, change, editDoneName, remove, write };
 export default pdcaLister.reducer;

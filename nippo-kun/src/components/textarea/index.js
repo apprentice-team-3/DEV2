@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Editor from "../pdca/single/Editor";
 
 export default function Textarea() {
@@ -11,7 +11,6 @@ export default function Textarea() {
   const mind = useSelector((state) => state.metaDater.metaData.mind);
   const pdcaList = useSelector((state) => state.pdcaLister.pdcaList);
   const tomorrowTodo = useSelector((state) => state.todo.tomorrow);
-  const dispatch = useDispatch();
 
   const distContent = [];
 
@@ -55,13 +54,21 @@ export default function Textarea() {
   for (const pdca of pdcaList) {
     if (
       !pdca.doneName ||
-      (!pdca.planBlock &&
-        !pdca.doBlock &&
-        !pdca.checkBlock &&
-        !pdca.actionBlock)
+      (!pdca.planBlock.length &&
+        !pdca.doBlock.length &&
+        !pdca.checkBlock.length &&
+        !pdca.actionBlock.length)
     ) {
       continue;
     }
+
+    console.log(
+      pdca.planBlock,
+      pdca.doBlock,
+      pdca.checkBlock,
+      pdca.actionBlock
+    );
+
     distContent.push({
       type: "heading",
       props: {

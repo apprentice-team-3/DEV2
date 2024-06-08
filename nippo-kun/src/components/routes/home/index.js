@@ -11,7 +11,9 @@ import Tomorrow from "../../tomorrow";
 const Home = () => {
   const doneName = useSelector((state) => state.doneNamer.doneName);
 
-  const pdcaList = useSelector((state) => state.pdcaLister.pdcaList);
+  const pdcaList = useSelector(
+    (state) => state.pdcaLister && state.pdcaLister.pdcaList
+  );
 
   return (
     <>
