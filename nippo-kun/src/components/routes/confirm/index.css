@@ -1,0 +1,19 @@
+.confirm__wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-top: 20px;
+  padding: 0 40px;
+  gap: 20px;
+  &.loader,
+  .textarea,
+  .review {
+    flex-basis: 50%;
+  }
+
+  &.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

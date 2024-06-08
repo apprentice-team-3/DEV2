@@ -178,7 +178,7 @@ export default function Textarea() {
   }
 
   return (
-    <div>
+    <div className="textarea">
       <Editor
         setMarkdown={setMarkdown}
         initialData={distContent.length ? distContent : [{}]}
