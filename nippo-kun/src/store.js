@@ -6,6 +6,7 @@ import {
   setHelpHTML,
   setHelpMarkdown,
 } from "./createMarkdownSlice";
+import confirmReport from "./redux/store/modules/confirmReport";
 import doneName from "./redux/store/modules/doneName";
 import metaData from "./redux/store/modules/metaData";
 import pageReducer from "./redux/store/modules/page";
@@ -22,6 +23,7 @@ const store = configureStore({
     doneNamer: doneName,
     metaDater: metaData,
     pager: pageReducer,
+    confirmReporter: confirmReport,
     ...rootReducer,
   },
 });
