@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDate } from "../../redux/store/modules/metaData";
+import { setDate, setLearningTime } from "../../redux/store/modules/metaData";
 import { updateTodayTask } from "../../todaySlice";
 import "./index.css";
 import Tabs from "./tab/index";
@@ -79,6 +79,7 @@ function MetaData() {
   const handleHourChange = (e) => {
     const newHour = e.target.value;
     setSelectedHour(newHour);
+    dispatch(setLearningTime(newHour));
     localStorage.setItem("defaultStudyHour", newHour);
   };
 
@@ -108,6 +109,7 @@ function MetaData() {
 
   const [selectedHour, setSelectedHour] = useState(() => {
     const savedHour = localStorage.getItem("defaultStudyHour");
+    dispatch(setLearningTime(savedHour));
     return savedHour !== null ? Number(savedHour) : 10;
   });
 
