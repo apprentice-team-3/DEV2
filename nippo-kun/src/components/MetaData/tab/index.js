@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { add, change } from "../../../redux/store/modules/pdcaList";
+import useStore from "../../../zustand/store";
 import "./index.css";
 
 const Tabs = ({
@@ -12,23 +11,24 @@ const Tabs = ({
   handleEditTab,
 }) => {
   const [activeTab, setActiveTab] = useState(currentTab);
-  const dispatch = useDispatch();
+  const change = useStore((state) => state.change);
+  const pdcaList = useStore((state) => state.pdcaList);
+  const state = useStore();
+
+  useEffect(() => {
+    for (let i = 0; i < tabs.length; i++) {
+      state.add && state.add({ doneName: tabs[i] });
+    }
+  }, [tabs]);
 
   useEffect(() => {
     setActiveTab(currentTab);
   }, [currentTab]);
 
-  if (tabs.length > 0) {
-    for (let i = 0; i < tabs.length; i++) {
-      dispatch(add({ doneName: tabs[i] }));
-    }
-    dispatch(change({ doneName: tabs[0] }));
-  }
-
   const handleTabClick = (tabName) => {
-    setActiveTab(tabName);
-    onTabChange(tabName);
-    dispatch(change({ doneName: tabName }));
+    setActiveTab((prev) => tabName);
+    onTabChange((prev) => tabName);
+    state.change && state.change({ doneName: tabName });
   };
 
   return (

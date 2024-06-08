@@ -2,7 +2,7 @@ import MetaData from "../../MetaData";
 import AllCheckButton from "../../buttons/all-check-button";
 import ConfirmButton from "../../buttons/confirm-button";
 import Header from "../../header";
-import PDCA from "../../pdca";
+import PDCAList from "../../pdca-list";
 import Tomorrow from "../../tomorrow";
 
 const Home = () => {
@@ -10,7 +10,7 @@ const Home = () => {
     <>
       <Header />
       <MetaData />
-      <PDCA />
+      <PDCAList />
       <AllCheckButton />
       <Tomorrow />
       <ConfirmButton />

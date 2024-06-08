@@ -1,13 +1,11 @@
 import classnames from "classnames";
 import { marked } from "marked";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import sanitizeHtml from "sanitize-html";
 import Loading from "../../loading";
 import Editor from "./Editor";
 import "./index.css";
 
-export default function Single({ title, placeholder, order = "PDCA" }) {
+export default function Single({ title, value, order = "PDCA" }) {
   const [markdown, setMarkdown] = useState("");
   const [showFeedback, setShowFeedBack] = useState("");
   const [commonFeedbackText, setCommonFeedbackText] = useState("");
@@ -15,23 +13,26 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
   const [addFeedbackText, setAddFeedbackText] = useState("");
 
   const [isTruncated, setIsTruncated] = useState(false);
-  const dispatch = useDispatch();
-
-  const pdcaList = useSelector(
-    (state) => state.pdcaLister && state.pdcaLister.pdcaList
-  );
-
-  const markedText = sanitizeHtml(markdown, {
-    allowedTags: [],
-    disallowedTagsMode: "recursiveEscape",
-  });
 
   marked.setOptions({
     gfm: true,
     breaks: true,
   });
 
-  const htmlText = marked.parse(markedText);
+  const initialData = [];
+
+  if (value) {
+    for (let i = 0; i < value.length; i++) {
+      initialData.push({
+        type: "heading",
+        props: {
+          level: 2,
+        },
+        content: "Plan",
+      });
+    }
+    console.log(initialData);
+  }
 
   const onFeedbackClick = async () => {
     setShowFeedBack(true);
@@ -110,7 +111,11 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
     <div>
       <h2 className="single__title">{title}</h2>
       <div className="single__textarea__wrapper">
-        <Editor order={order} setMarkdown={setMarkdown} />
+        <Editor
+          order={order}
+          setMarkdown={setMarkdown}
+          initialData={initialData.length > 0 ? initialData : [{}]}
+        />
       </div>
       <button className={"single__button"} onClick={onFeedbackClick}>
         フィードバックを取得する

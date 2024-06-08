@@ -6,8 +6,11 @@ import { useCreateBlockNote } from "@blocknote/react";
 import { useDispatch } from "react-redux";
 import { write } from "../../../../redux/store/modules/pdcaList";
 
-export default function Editor({ order = "PDCA", setMarkdown }) {
-  const initialData = [{}];
+export default function Editor({
+  order = "PDCA",
+  setMarkdown,
+  initialData = [{}],
+}) {
   const dispatch = useDispatch();
 
   const editor = useCreateBlockNote({
@@ -21,16 +24,16 @@ export default function Editor({ order = "PDCA", setMarkdown }) {
 
     switch (order) {
       case "Plan":
-        dispatch(write({ plan: markdown }));
+        dispatch(write({ plan: markdown, planBlock: editor.document }));
         break;
       case "Do":
-        dispatch(write({ do: markdown }));
+        dispatch(write({ do: markdown, doBlock: editor.document }));
         break;
       case "Check":
-        dispatch(write({ check: markdown }));
+        dispatch(write({ check: markdown, checkBlock: editor.document }));
         break;
       case "Action":
-        dispatch(write({ action: markdown }));
+        dispatch(write({ action: markdown, actionBlock: editor.document }));
         break;
       default:
         break;

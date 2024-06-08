@@ -4,7 +4,15 @@ const pdcaLister = createSlice({
   name: "pdcaLister",
   initialState: {
     pdcaList: [
-      { doneName: "", isOpen: true, plan: "", do: "", check: "", action: "" },
+      {
+        doneName: "",
+        isOpen: true,
+        plan: "",
+        do: "",
+        check: "",
+        action: "",
+        isTruncated: true,
+      },
     ],
   },
   reducers: {
@@ -19,7 +27,15 @@ const pdcaLister = createSlice({
 
       state.pdcaList = [
         ...state.pdcaList,
-        { ...payload, isOpen: true, plan: "", do: "", check: "", action: "" },
+        {
+          ...payload,
+          isOpen: true,
+          plan: "",
+          do: "",
+          check: "",
+          action: "",
+          isTruncated: true,
+        },
       ];
     },
     remove(state, { type, payload }) {
@@ -40,8 +56,6 @@ const pdcaLister = createSlice({
         }
         return { ...item, isOpen: false };
       });
-
-      console.log(state.pdcaList);
     },
 
     change(state, { type, payload }) {
@@ -52,7 +66,6 @@ const pdcaLister = createSlice({
         }
         return { ...item, isOpen: false };
       });
-      console.log(state.pdcaList);
     },
   },
 });
