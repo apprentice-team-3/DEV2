@@ -6,9 +6,11 @@ import { useCreateBlockNote } from "@blocknote/react";
 import { useDispatch, useSelector } from "react-redux";
 import { write } from "../../../../redux/store/modules/pdcaList";
 
-export default function Editor({ order = "PDCA", setMarkdown }) {
-  const initialData = [{}];
-
+export default function Editor({
+  order = "PDCA",
+  setMarkdown,
+  initialData = [{}],
+}) {
   const dispatch = useDispatch();
   const doneName = useSelector((state) => state.doneNamer.doneName);
   const pdca = useSelector(
