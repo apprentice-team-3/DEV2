@@ -4,10 +4,19 @@ import Editor from "../pdca/single/Editor";
 
 export default function Textarea() {
   const [markdown, setMarkdown] = useState("");
-
+  const date = useSelector((state) => state.metaDater.metaData.date);
+  const learningTime = useSelector(
+    (state) => state.metaDater.metaData.learningTime
+  );
+  const mind = useSelector((state) => state.metaDater.metaData.mind);
   const pdcaList = useSelector((state) => state.pdcaLister.pdcaList);
 
   const distContent = [];
+
+  distContent.push({
+    tye: "paragraph",
+    content: `${date}\n学習時間:${learningTime}時間    今日の気持ち: ${mind}`,
+  });
 
   if (pdcaList[0].planBlock) {
     distContent.push({
