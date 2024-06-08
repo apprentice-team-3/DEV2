@@ -1,7 +1,7 @@
 import classnames from "classnames";
 import { marked } from "marked";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import sanitizeHtml from "sanitize-html";
 import Loading from "../../loading";
 import Editor from "./Editor";
@@ -15,7 +15,6 @@ export default function Single({ title, placeholder, order = "PDCA" }) {
   const [addFeedbackText, setAddFeedbackText] = useState("");
 
   const [isTruncated, setIsTruncated] = useState(false);
-  const dispatch = useDispatch();
 
   const pdcaList = useSelector(
     (state) => state.pdcaLister && state.pdcaLister.pdcaList

@@ -18,24 +18,22 @@ export default function Editor({
     dictionary: locales.ja,
   });
 
-  console.log(initialData);
-
   const onChange = async () => {
     const markdown = await editor.blocksToMarkdownLossy(editor.document);
     setMarkdown(markdown);
 
     switch (order) {
       case "Plan":
-        dispatch(write({ plan: markdown }));
+        dispatch(write({ plan: markdown, planBlock: editor.document }));
         break;
       case "Do":
-        dispatch(write({ do: markdown }));
+        dispatch(write({ do: markdown, doBlock: editor.document }));
         break;
       case "Check":
-        dispatch(write({ check: markdown }));
+        dispatch(write({ check: markdown, checkBlock: editor.document }));
         break;
       case "Action":
-        dispatch(write({ action: markdown }));
+        dispatch(write({ action: markdown, actionBlock: editor.document }));
         break;
       case "Confirm":
         break;
