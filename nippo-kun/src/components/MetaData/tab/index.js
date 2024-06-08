@@ -65,7 +65,7 @@ const Tabs = ({
           {tab}
         </button>
       ))}
-      <button className="tab-button add-tab" onClick={handleAddTab}>
+      <button className="add-tab" onClick={handleAddTab}>
         +
       </button>
       {activeTab && (

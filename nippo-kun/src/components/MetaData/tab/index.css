@@ -1,5 +1,6 @@
 .tabs {
   display: flex;
+  margin: 5px 40px;
   margin-bottom: 20px;
 }
 
@@ -8,6 +9,24 @@
   cursor: pointer;
   border: none;
   background-color: lightgray;
+}
+.add-tab {
+  display: block;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  line-height: 30px;
+  font-weight: bold;
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 }
 
 .tab-button.active {
