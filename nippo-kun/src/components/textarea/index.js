@@ -10,6 +10,7 @@ export default function Textarea() {
   );
   const mind = useSelector((state) => state.metaDater.metaData.mind);
   const pdcaList = useSelector((state) => state.pdcaLister.pdcaList);
+  const tomorrowTodo = useSelector((state) => state.todo.tomorrow);
 
   const distContent = [];
 
@@ -30,8 +31,6 @@ export default function Textarea() {
     }
   );
 
-  console.log(pdcaList);
-
   if (pdcaList.length > 0) {
     distContent.push({
       type: "heading",
@@ -40,6 +39,7 @@ export default function Textarea() {
       },
       content: "Done List",
     });
+
     for (const pdca of pdcaList) {
       if (!pdca.doneName) {
         continue;
@@ -52,7 +52,13 @@ export default function Textarea() {
   }
 
   for (const pdca of pdcaList) {
-    if (!pdca.doneName) {
+    if (
+      !pdca.doneName ||
+      (!pdca.planBlock &&
+        !pdca.doBlock &&
+        !pdca.checkBlock &&
+        !pdca.actionBlock)
+    ) {
       continue;
     }
     distContent.push({
@@ -117,6 +123,23 @@ export default function Textarea() {
       for (let i = 0; i < pdca.actionBlock.length; i++) {
         distContent.push(pdca.actionBlock[i]);
       }
+    }
+  }
+
+  if (tomorrowTodo.length > 0) {
+    distContent.push({
+      type: "heading",
+      props: {
+        level: 2,
+      },
+      content: "明日やること",
+    });
+
+    for (const todo of tomorrowTodo) {
+      distContent.push({
+        type: "bulletListItem",
+        content: todo,
+      });
     }
   }
 
