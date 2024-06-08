@@ -1,3 +1,4 @@
+import { marked } from "marked";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { reviewWrite } from "../../../redux/store/modules/all-review";
@@ -5,6 +6,8 @@ import CopyButton from "../../buttons/copy-button";
 import Header from "../../header";
 import Loading from "../../loading";
 import Textarea from "../../textarea";
+import "./index.css";
+
 const Confirm = () => {
   const isLoading = useSelector((state) => state.loader.isLoading);
   const [isStateLoading, setIsStateLoading] = useState(isLoading);
@@ -18,7 +21,6 @@ const Confirm = () => {
   useEffect(() => {
     setTimeout(() => {
       if (isLoading) {
-        console.log("AIにレビューを依頼します", confirmReport);
         try {
           fetch("https://express-hello-world-a3nc.onrender.com/all-review/", {
             method: "POST",
@@ -34,7 +36,7 @@ const Confirm = () => {
               response.json().then((data) => {
                 const { generatedText } = data;
                 dispatch(reviewWrite(generatedText));
-                setReview(generatedText);
+                setReview(marked.parse(generatedText));
                 setIsStateLoading(false);
               });
             }
@@ -49,11 +51,19 @@ const Confirm = () => {
   return (
     <>
       <Header />
-      <div className="">
+      <div className="confirm__wrapper">
         {isStateLoading && <Loading />}
-        {!isStateLoading && review && <div>{review}</div>}
+        {!isStateLoading && review && (
+          <div className="review">
+            <div
+              dangerouslySetInnerHTML={{
+                __html: review,
+              }}
+            ></div>
+          </div>
+        )}
+        <Textarea />
       </div>
-      <Textarea />
       <CopyButton />
     </>
   );
