@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { marked } from 'marked';
+import sanitizeHtml from 'sanitize-html';
 
 const yesterdayTasks = localStorage.getItem('yesterday') ? JSON.parse(localStorage.getItem('yesterday')) : [];
 const storedTomorrow = localStorage.getItem('tomorrow') ? JSON.parse(localStorage.getItem('tomorrow')) : [];
@@ -10,7 +12,7 @@ const initialState = {
 
 const todoSlice = createSlice({
     name: 'todo',
-    initialState,
+    initialState: initialState,
     reducers: {
         setTodo: (state, action) => {
             state.todo = action.payload;
@@ -32,4 +34,5 @@ const todoSlice = createSlice({
 });
 
 export const { setTodo, addTodo, removeTodo, updateTodo } = todoSlice.actions;
+
 export default todoSlice.reducer;
