@@ -18,12 +18,14 @@ const Tabs = ({
     setActiveTab(currentTab);
   }, [currentTab]);
 
-  if (tabs.length > 0) {
-    for (let i = 0; i < tabs.length; i++) {
-      dispatch(add({ doneName: tabs[i] }));
+  useEffect(() => {
+    if (tabs.length > 0) {
+      for (let i = 0; i < tabs.length; i++) {
+        dispatch(add({ doneName: tabs[i] }));
+      }
+      dispatch(change({ doneName: tabs[0] }));
     }
-    dispatch(change({ doneName: tabs[0] }));
-  }
+  }, [tabs]);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
