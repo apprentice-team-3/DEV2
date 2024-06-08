@@ -52,8 +52,6 @@ export default function Editor({
     const markdown = await editor.blocksToMarkdownLossy(editor.document);
     setMarkdown(markdown);
 
-    console.log(doneName);
-
     switch (order) {
       case "Plan":
         dispatch(

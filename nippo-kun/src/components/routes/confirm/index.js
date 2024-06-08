@@ -20,7 +20,6 @@ const Confirm = () => {
   const dispatch = useDispatch();
 
   async function fetchReview(confirmReport) {
-    console.log(confirmReport);
     try {
       setIsStateLoading(true);
       const response = await fetch(
