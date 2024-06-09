@@ -1,9 +1,13 @@
+import { useDispatch } from "react-redux";
+import { changeConfirm } from "../../../redux/store/modules/page";
 import "./index.css";
 
 export default function Confirm() {
+  const dispatch = useDispatch();
+
   const onClick = (e) => {
     e.preventDefault();
-    window.location.href = "/confirm";
+    dispatch(changeConfirm({}));
   };
 
   return (
