@@ -9,6 +9,7 @@
 .MetaData > div {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 select {
@@ -28,6 +29,37 @@ select {
 .selectedMind {
   margin: 3px;
   width: 90px;
+  height: 30px;
+}
+
+.currentDate,
+.learningTime,
+.selectedMind {
+  margin-left: 3px;
+  cursor: pointer;
+}
+
+.currentDate:hover,
+.learningTime:hover,
+.selectedMind:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  z-index: 1;
+  width: 100px;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
+.dropdown select {
+  margin: 3px;
+  width: 100%;
   height: 30px;
 }
 

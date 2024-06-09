@@ -17,11 +17,9 @@ import Tabs from "./tab/index";
 
 function MetaData() {
   const dispatch = useDispatch();
-
   const [currentTab, setCurrentTab] = useState("");
   const [tabs, setTabs] = useState([]);
   const [isToday, setIsToday] = useState(true);
-
   const [daysInMonth, setDaysInMonth] = useState([]);
 
   useEffect(() => {
@@ -69,11 +67,14 @@ function MetaData() {
     }
   };
 
-  const handleDateChange = (month, day, yesterday = "") => {
-    setCurrentDate(`${month}/${day}`);
+  const handleDateChange = (month, day) => {
+    const date = new Date(new Date().getFullYear(), month - 1, day);
+    const weekday = date.toLocaleDateString("ja-JP", { weekday: "short" });
+    setCurrentDate(`${month}月${day}日(${weekday})`);
     setSelectedMonth(month);
     setSelectedDay(day);
-    updateDayOfWeek(month, day);
+    setDayOfWeek(weekday);
+    dispatch(setDate(`${month}月${day}日(${weekday})`));
   };
 
   const handleMonthChange = (e) => {
@@ -159,27 +160,35 @@ function MetaData() {
     setCurrentTab((prev) => tabName);
   };
 
+  const toggleDropdown = (id) => {
+    const dropdown = document.getElementById(id);
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  };
+
+
   return (
     <>
       <div className="MetaData">
         <div className="date">
           <div>日付:</div>
-          <select value={selectedMonth} onChange={handleMonthChange}>
-            {[...Array(12).keys()].map((m) => (
-              <option key={m + 1} value={m + 1}>
-                {m + 1}
-              </option>
-            ))}
-          </select>
-          <select value={selectedDay} onChange={handleDayChange}>
-            {[...Array(31).keys()].map((d) => (
-              <option key={d + 1} value={d + 1}>
-                {d + 1}
-              </option>
-            ))}
-          </select>
-          <div>
-            {currentDate}({dayOfWeek})
+          <span className="currentDate" onClick={() => toggleDropdown('dateDropdown')}>
+            {currentDate}
+          </span>
+          <div id="dateDropdown" className="dropdown">
+            <select value={selectedMonth} onChange={handleMonthChange}>
+              {[...Array(12).keys()].map((m) => (
+                <option key={m + 1} value={m + 1}>
+                  {m + 1}月
+                </option>
+              ))}
+            </select>
+            <select value={selectedDay} onChange={handleDayChange}>
+              {[...Array(31).keys()].map((d) => (
+                <option key={d + 1} value={d + 1}>
+                  {d + 1}日
+                </option>
+              ))}
+            </select>
           </div>
           <button
             className="yesterday-change-button"
@@ -212,22 +221,23 @@ function MetaData() {
         </div>
         <div className="time">
           <div>学習時間</div>
-          <select value={selectedHour} onChange={handleHourChange}>
+          <span className="learningTime" onClick={() => toggleDropdown('timeDropdown')}>
+            {selectedHour}時間
+          </span>
+          <select id="timeDropdown" className="dropdown" value={selectedHour} onChange={handleHourChange}>
             {[...Array(25).keys()].map((hour) => (
               <option key={hour} value={hour}>
-                {hour}
+                {hour}時間
               </option>
             ))}
           </select>
-          <div className="timeUnit">h</div>
         </div>
         <div className="mind">
           <div>今日の気持ち</div>
-          <select
-            className="selectedMind"
-            value={selectedMind}
-            onChange={handleMindChange}
-          >
+          <span className="selectedMind" onClick={() => toggleDropdown('mindDropdown')}>
+            {selectedMind}
+          </span>
+          <select id="mindDropdown" className="dropdown" value={selectedMind} onChange={handleMindChange}>
             {["めちゃええ", "ええ", "まあまあ", "わるい", "めちゃわるい"].map(
               (value) => (
                 <option key={value} value={value}>
