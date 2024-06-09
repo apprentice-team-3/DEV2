@@ -3,12 +3,45 @@ import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setReport } from "../../../../redux/store/modules/confirmReport";
+import { startLoading } from "../../../../redux/store/modules/loading";
 import { write } from "../../../../redux/store/modules/pdcaList";
 
-export default function Editor({ order = "PDCA", setMarkdown }) {
-  const initialData = [{}];
+export default function Editor({
+  order = "PDCA",
+  setMarkdown,
+  initialData = [{}],
+}) {
   const dispatch = useDispatch();
+  const doneName = useSelector((state) => state.doneNamer.doneName);
+
+  const pdca = useSelector(
+    (state) =>
+      state.pdcaLister.pdcaList.filter((item) => item.doneName === doneName)[0]
+  );
+
+  for (
+    let i = 0;
+    pdca[order.toLowerCase() + "Block"] &&
+    i < pdca[order.toLowerCase() + "Block"].length;
+    i++
+  ) {
+    initialData.push(pdca[order.toLowerCase() + "Block"][i]);
+    if (i === 0) {
+      initialData.shift();
+    }
+  }
+
+  useEffect(() => {
+    if (order === "confirm") {
+      editor.blocksToMarkdownLossy(editor.document).then((markdown) => {
+        dispatch(setReport(markdown));
+        dispatch(startLoading());
+      });
+    }
+  }, [initialData]);
 
   const editor = useCreateBlockNote({
     initialContent: initialData,
@@ -21,16 +54,30 @@ export default function Editor({ order = "PDCA", setMarkdown }) {
 
     switch (order) {
       case "Plan":
-        dispatch(write({ plan: markdown }));
+        dispatch(
+          write({
+            plan: markdown,
+            planBlock: editor.document,
+            doneName,
+          })
+        );
         break;
       case "Do":
-        dispatch(write({ do: markdown }));
+        dispatch(write({ do: markdown, doBlock: editor.document, doneName }));
+
         break;
       case "Check":
-        dispatch(write({ check: markdown }));
+        dispatch(
+          write({ check: markdown, checkBlock: editor.document, doneName })
+        );
         break;
       case "Action":
-        dispatch(write({ action: markdown }));
+        dispatch(
+          write({ action: markdown, actionBlock: editor.document, doneName })
+        );
+        break;
+      case "confirm":
+        dispatch(setReport(markdown));
         break;
       default:
         break;
