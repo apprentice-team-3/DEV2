@@ -79,8 +79,6 @@ export default function Single({ title, order = "PDCA" }) {
 
     if (isTruncated) {
       setIsTruncated(false);
-      const $dom = document.querySelector(".single__feedback__wrapper");
-      $dom.scrollIntoView({ behavior: "smooth" });
     } else {
       setIsTruncated(true);
     }
