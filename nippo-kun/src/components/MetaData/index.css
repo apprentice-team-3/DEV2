@@ -6,7 +6,7 @@
   font-size: 20px;
 }
 
-.MetaData>div {
+.MetaData > div {
   display: flex;
   align-items: center;
 }
@@ -34,4 +34,24 @@ select {
 .Todo {
   font-size: larger;
   font-weight: bold;
+}
+
+.yesterday-change-button {
+  display: block;
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  text-align: center;
+  line-height: 20px;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: 8px;
+  margin-left: 5px;
+
+  &:hover {
+    background-color: #388e3c;
+  }
 }

@@ -20,6 +20,9 @@ function MetaData() {
 
   const [currentTab, setCurrentTab] = useState("");
   const [tabs, setTabs] = useState([]);
+  const [isToday, setIsToday] = useState(true);
+
+  const [daysInMonth, setDaysInMonth] = useState([]);
 
   useEffect(() => {
     const storedTabs = localStorage.getItem("yesterday")
@@ -29,6 +32,11 @@ function MetaData() {
     if (storedTabs.length > 0) {
       setCurrentTab(storedTabs[0]);
     }
+
+    const days = Array.from({ length: 12 }, (_, i) =>
+      new Date(2022, i + 1, 0).getDate()
+    );
+    setDaysInMonth(days);
   }, []);
 
   const handleUpdateTask = (index, content) => {
@@ -61,7 +69,7 @@ function MetaData() {
     }
   };
 
-  const handleDateChange = (month, day) => {
+  const handleDateChange = (month, day, yesterday = "") => {
     setCurrentDate(`${month}/${day}`);
     setSelectedMonth(month);
     setSelectedDay(day);
@@ -173,6 +181,34 @@ function MetaData() {
           <div>
             {currentDate}({dayOfWeek})
           </div>
+          <button
+            className="yesterday-change-button"
+            onClick={() => {
+              setIsToday((prev) => !prev);
+              if (isToday) {
+                const day =
+                  +selectedDay === 1
+                    ? daysInMonth[+selectedMonth - 1]
+                    : +selectedDay - 1;
+
+                let month =
+                  +selectedDay === 1 ? selectedMonth - 1 : +selectedMonth;
+
+                if (month === 0) {
+                  month = 12;
+                }
+
+                console.log(month, day);
+
+                handleDateChange(month, day);
+              } else {
+                const today = new Date();
+                handleDateChange(today.getMonth() + 1, today.getDate());
+              }
+            }}
+          >
+            {isToday ? "昨日" : "今日"}に変更
+          </button>
         </div>
         <div className="time">
           <div>学習時間</div>
