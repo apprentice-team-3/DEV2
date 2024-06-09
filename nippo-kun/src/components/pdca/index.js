@@ -1,5 +1,3 @@
-import Add from "../buttons/add";
-import Minus from "../buttons/minus";
 import "./index.css";
 import Single from "./single";
 import TotalReview from "./total-review";
@@ -13,10 +11,7 @@ export default function PDCA() {
         <Single title="Check" placeholder="Checkの内容" order={"Check"} />
         <Single title="Action" placeholder="Actionの内容" order={"Action"} />
       </section>
-      <div className="button__wrapper">
-        <Add />
-        <Minus />
-      </div>
+
       <TotalReview />
     </>
   );
