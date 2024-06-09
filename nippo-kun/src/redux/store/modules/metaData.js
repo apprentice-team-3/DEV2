@@ -1,8 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// 本日の日付を取得
-const today = new Date();
-
 const metaDater = createSlice({
   name: "metadater",
   initialState: {

@@ -65,14 +65,17 @@ const Tabs = ({
           {tab}
         </button>
       ))}
-      <button className="tab-button add-tab" onClick={handleAddTab}>
+      <button className="add-tab" onClick={handleAddTab}>
         +
       </button>
       {activeTab && (
         <>
           <div className="task-controls">
-            <button onClick={handleEditTab}>編集</button>
-            <button onClick={() => handleRemoveTab(activeTab)}>削除</button>
+            <button className="edit" onClick={handleEditTab}></button>
+            <button
+              className="remove"
+              onClick={() => handleRemoveTab(activeTab)}
+            ></button>
           </div>
         </>
       )}
